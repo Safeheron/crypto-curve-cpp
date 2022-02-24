@@ -16,6 +16,7 @@ ed25519_publickey_pure (const ed25519_secret_key sk, ed25519_public_key pk) {
     /* A = aB */
     expand256_modm(a, sk, 32);
     ge25519_scalarmult_base_niels(&A, ge25519_niels_base_multiples, a);
+    memzero(&a, sizeof(a));
     ge25519_pack(pk, &A);
 }
 
@@ -46,6 +47,7 @@ ed25519_scalarmult_pure (ed25519_public_key res, const ed25519_secret_key sk, co
     }
 
     ge25519_scalarmult(&A, &P, a);
+    memzero(&a, sizeof(a));
     curve25519_neg(A.x, A.x);
     ge25519_pack(res, &A);
     return 0;
