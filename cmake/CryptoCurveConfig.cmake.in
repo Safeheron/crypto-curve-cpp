@@ -8,4 +8,19 @@ message(STATUS "CMAKE_INSTALL_PREFIX = ${CMAKE_INSTALL_PREFIX}")
 set_and_check(CryptoCurve_INCLUDE_DIR  "${CMAKE_INSTALL_PREFIX}/include/safeheron")
 set_and_check(CryptoCurve_INCLUDE_DIRS "${CMAKE_INSTALL_PREFIX}/include/safeheron")
 set_and_check(CryptoCurve_LIBRARY_DIR "${CMAKE_INSTALL_PREFIX}/lib")
-set_and_check(CryptoCurve_LIBRARY "${CMAKE_INSTALL_PREFIX}/lib/libCryptoCurve.so")
+
+
+MESSAGE(STATUS "operation system is ${CMAKE_SYSTEM}")
+
+IF (CMAKE_SYSTEM_NAME MATCHES "Darwin")
+    MESSAGE(STATUS "current platform: Darwin ")
+    set_and_check(CryptoBN_LIBRARY "${CMAKE_INSTALL_PREFIX}/lib/libCryptoBN.dylib")
+ELSEIF (CMAKE_SYSTEM_NAME MATCHES "Windows")
+    MESSAGE(STATUS "current platform: Windows")
+    set_and_check(CryptoBN_LIBRARY "${CMAKE_INSTALL_PREFIX}/lib/libCryptoBN.dll")
+ELSE ()
+    MESSAGE(STATUS "other platform: ${CMAKE_SYSTEM_NAME}")
+    set_and_check(CryptoBN_LIBRARY "${CMAKE_INSTALL_PREFIX}/lib/libCryptoBN.so")
+ENDIF (CMAKE_SYSTEM_NAME MATCHES "Darwin")
+
+MESSAGE(STSTUS "###################################")
