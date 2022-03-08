@@ -12,6 +12,13 @@ set(CMAKE_BUILD_TYPE "Release")
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -O2")
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O2")
 
+find_package(GTest REQUIRED)
+if(GTest_FOUND )
+    MESSAGE(STATUS "============> Found GTest!")
+    message(STATUS "GTEST_INCLUDE_DIRS=${GTEST_INCLUDE_DIRS}")
+    message(STATUS "GTEST_BOTH_LIBRARIES=${GTEST_BOTH_LIBRARIES}")
+endif(GTest_FOUND )
+
 include_directories("../src")
 
 add_executable(curve-point-test curve-point-test.cpp)

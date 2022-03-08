@@ -7,18 +7,26 @@ set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -O2 -Wall -Wextra -Wno-unused-parameter -Wno
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O2 -Wall -Wextra -Wno-unused-parameter -Wno-unused-variable")
 
 find_package(PkgConfig REQUIRED)
-if (PkgConfig_FOUND)
-    MESSAGE(STATUS "============> Found PkgConfig_FOUND!")
-endif (PkgConfig_FOUND)
-pkg_search_module(PROTOBUF REQUIRED protobuf)  # this looks for opencv.pc file
+if(PkgConfig_FOUND )
+    MESSAGE(STATUS "============> Found PkgConfig!")
+endif(PkgConfig_FOUND )
+
+pkg_search_module(PROTOBUF REQUIRED protobuf)  # depend on pkg-config, this looks for opencv.pc file
+if(PROTOBUF_FOUND )
+    message(STATUS "============> Found PROTOBUF!")
+    message(STATUS "PROTOBUF_INCLUDE_DIRS=${PROTOBUF_INCLUDE_DIRS}")
+    message(STATUS "PROTOBUF_LIBRARY_DIRS=${PROTOBUF_LIBRARY_DIRS}")
+    message(STATUS "PROTOBUF_LINK_LIBRARIES=${PROTOBUF_LINK_LIBRARIES}")
+    message(STATUS "PROTOBUF_LIBRARIES=${PROTOBUF_LIBRARIES}")
+endif(PROTOBUF_FOUND )
 
 #set(OPENSSL_USE_STATIC_LIBS TRUE)
 find_package(OpenSSL REQUIRED)
 if (OpenSSL_FOUND)
-    MESSAGE(STATUS "============> Found OpenSSL!")
+    message(STATUS "============> Found OpenSSL!")
     message(STATUS "OPENSSL_INCLUDE_DIR = ${OPENSSL_INCLUDE_DIR}")
+    message(STATUS "OPENSSL_LIBRARIES=${OPENSSL_LIBRARIES}")
 endif (OpenSSL_FOUND)
-include_directories(${OPENSSL_CURVE_WRAPPER_H})
 
 find_package(CryptoBN REQUIRED)
 if(CryptoBN_FOUND )
@@ -37,7 +45,6 @@ if(CryptoEncode_FOUND )
     message(STATUS "CryptoEncode_LIBRARY_DIR = ${CryptoEncode_LIBRARY_DIR}")
     message(STATUS "CryptoEncode_LIBRARY = ${CryptoEncode_LIBRARY}")
 endif(CryptoEncode_FOUND )
-
 
 include_directories("../third_party")
 
@@ -61,6 +68,8 @@ add_library(${PROJECT_NAME} SHARED
         crypto-curve/curve_point.pb.cc
         crypto-curve/ed25519_ex.c
         crypto-curve/openssl_curve_wrapper.cpp
+        crypto-curve/ecdsa.cpp
+        crypto-curve/eddsa.cpp
         ${ed25519-donna_SOURCES}
 )
 

@@ -7,6 +7,8 @@
 
 #include "crypto-bn/bn.h"
 #include "curve_point.h"
+#include "ecdsa.h"
+#include "eddsa.h"
 
 namespace safeheron{
 namespace curve {
@@ -22,13 +24,13 @@ public:
     const CurvePoint g;
     const ec_group_st* grp;
 
-    Curve(const safeheron::bignum::BN _p,
-          const safeheron::bignum::BN _a,
-          const safeheron::bignum::BN _b,
-          const safeheron::bignum::BN _c,
-          const safeheron::bignum::BN _d,
-          const safeheron::bignum::BN _n,
-          const CurvePoint _g);
+    Curve(safeheron::bignum::BN _p,
+          safeheron::bignum::BN _a,
+          safeheron::bignum::BN _b,
+          safeheron::bignum::BN _c,
+          safeheron::bignum::BN _d,
+          safeheron::bignum::BN _n,
+          CurvePoint _g);
     ~Curve();
 };
 
