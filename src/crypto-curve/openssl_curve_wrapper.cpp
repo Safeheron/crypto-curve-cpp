@@ -53,7 +53,7 @@ int read_pubkey(const ec_group_st* grp, const uint8_t *pub_key, ec_point_st *pub
             ret = -1;
             goto err;
         }
-        uncompress_coords(grp, pub_key[0], bn_x, bn_y);
+        uncompress_coords(grp, pub_key[0]==0x02 ? 0:1, bn_x, bn_y);
     }
 
     if ((ret = EC_POINT_set_affine_coordinates(grp, pub, bn_x, bn_y, nullptr)) != 1) {
@@ -413,7 +413,7 @@ int uncompress_coords(const ec_group_st* grp, uint8_t odd, const bignum_st *x, b
     }
 
     if (!(p = EC_POINT_new(grp)) ||
-        (ret = EC_POINT_set_compressed_coordinates(grp, p, x, 32, ctx)) != 1 ||
+        (ret = EC_POINT_set_compressed_coordinates(grp, p, x, odd, ctx)) != 1 ||
         (ret = EC_POINT_get_affine_coordinates(grp, p, nullptr, bn_y, ctx)) != 1) {
         ret = 1;
         goto err;

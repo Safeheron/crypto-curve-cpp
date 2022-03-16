@@ -16,6 +16,7 @@ using safeheron::curve::Curve;
 using safeheron::curve::CurvePoint;
 using safeheron::curve::CurveType;
 using safeheron::exception::LocatedException;
+using safeheron::exception::OpensslException;
 
 namespace safeheron{
 namespace curve {
@@ -93,12 +94,16 @@ void Sign(const CurveType c_type, const BN &priv,
 
     priv.ToBytes32BE((uint8_t *)sk);
 
-    safeheron::_openssl_curve_wrapper::sign_digest(curv->grp, sk, digest, sig);
+    int ret = safeheron::_openssl_curve_wrapper::sign_digest(curv->grp, sk, digest, sig);
+    if (0 != ret) {
+        throw OpensslException(__FILE__, __LINE__, __FUNCTION__, ret);
+    }
 }
 
 bool Verify(const CurveType c_type, const CurvePoint &pub,
             const uint8_t *sig, const uint8_t *digest)
 {
+    assert(sig && der);
     if(( c_type != CurveType::SECP256K1 ) && (c_type != CurveType::P256 )){
         throw LocatedException(__FILE__, __LINE__, __FUNCTION__, -1);
     }
@@ -113,6 +118,7 @@ bool Verify(const CurveType c_type, const CurvePoint &pub,
 
 bool SigToDer(const uint8_t *sig, uint8_t *der)
 {
+    assert(sig && der);
     bool ret = 0;
     int der_len = 0;
     BIGNUM* bn_r = nullptr;

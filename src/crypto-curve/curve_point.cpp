@@ -82,9 +82,9 @@ CurvePoint::CurvePoint(CurveType c_type) {
                 throw OpensslException(__FILE__, __LINE__, __FUNCTION__, -1);
             }
             if ((ret = EC_POINT_set_to_infinity(curve_grp_, short_point_)) != 1) {
-                throw OpensslException(__FILE__, __LINE__, __FUNCTION__, ret);
                 EC_POINT_clear_free(short_point_);
                 short_point_ = nullptr;
+                throw OpensslException(__FILE__, __LINE__, __FUNCTION__, ret);
             }
             break;
         }
@@ -144,10 +144,17 @@ CurvePoint::CurvePoint(const safeheron::bignum::BN &x, const safeheron::bignum::
             if (!(short_point_ = EC_POINT_new(curve_grp_))) {
                 throw OpensslException(__FILE__, __LINE__, __FUNCTION__, -1);
             }
-            if ((ret = EC_POINT_set_affine_coordinates(curve_grp_, short_point_, x.GetBIGNUM(), y.GetBIGNUM(), nullptr)) != 1) {
-                throw OpensslException(__FILE__, __LINE__, __FUNCTION__, ret);
+            if (x.IsZero() && y.IsZero()) {
+                if ((ret = EC_POINT_set_to_infinity(curve_grp_, short_point_)) != 1) {
+                    EC_POINT_clear_free(short_point_);
+                    short_point_ = nullptr;
+                    throw OpensslException(__FILE__, __LINE__, __FUNCTION__, ret);
+                }
+            }
+            else if ((ret = EC_POINT_set_affine_coordinates(curve_grp_, short_point_, x.GetBIGNUM(), y.GetBIGNUM(), nullptr)) != 1) {
                 EC_POINT_clear_free(short_point_);
                 short_point_ = nullptr;
+                throw OpensslException(__FILE__, __LINE__, __FUNCTION__, ret);
             }
             break;
         }
@@ -295,13 +302,16 @@ bool CurvePoint::PointFromX(safeheron::bignum::BN &x, bool y_is_odd, CurveType c
     switch (category) {
         case 0: // Short curve
         {
-            uint8_t pub_key[33];
-            pub_key[0] = y_is_odd ? 0x03 : 0x02;
-            x.ToBytes32BE(pub_key + 1);
-            
-            short_point_ = EC_POINT_new(curve_grp_);
-            return (0 == safeheron::_openssl_curve_wrapper::read_pubkey(curve_grp_, pub_key, short_point_)) ? true : false;
-        }
+            int ret = 0;
+            if (!(short_point_ = EC_POINT_new(curve_grp_))) {
+                return false;
+            }
+            if ((ret = EC_POINT_set_compressed_coordinates(curve_grp_, short_point_, x.GetBIGNUM(), y_is_odd, nullptr)) != 1) {
+                EC_POINT_clear_free(short_point_);
+                short_point_ = nullptr;
+                return false;
+            }
+            return true;        }
         case 1: // Edwards curve
         {
             // For Ecdsa, not only Ed25519.
@@ -477,13 +487,8 @@ CurvePoint CurvePoint::operator+(const CurvePoint &point) const {
         case 0: // Short curve
         {
             int ret = 0;
-            if (res.IsInfinity()) {
-                res = point;
-            }
-            else if (!point.IsInfinity()) {
-                if ((ret = safeheron::_openssl_curve_wrapper::point_add(curve_grp_, point.short_point_, res.short_point_)) != 0) {
-                    throw OpensslException(__FILE__, __LINE__, __FUNCTION__, ret);
-                }
+            if ((ret = EC_POINT_add(curve_grp_, res.short_point_, point.short_point_, res.short_point_, nullptr)) != 1) {
+                throw OpensslException(__FILE__, __LINE__, __FUNCTION__, ret);
             }
             break;
         }
@@ -516,10 +521,8 @@ CurvePoint CurvePoint::operator*(const safeheron::bignum::BN &bn) const {
         {
             int ret = 0;
             BN k = bn % curv->n;
-            if (!res.IsInfinity()) {
-                if ((ret = safeheron::_openssl_curve_wrapper::point_multiply(curve_grp_, k.GetBIGNUM(), short_point_, res.short_point_)) != 0) {
-                    throw OpensslException(__FILE__, __LINE__, __FUNCTION__, ret);
-                }
+            if ((ret = EC_POINT_mul(curve_grp_, res.short_point_, nullptr, res.short_point_, k.GetBIGNUM(), nullptr)) != 1) {
+                throw OpensslException(__FILE__, __LINE__, __FUNCTION__, ret);
             }
             break;
         }
@@ -555,13 +558,8 @@ CurvePoint &CurvePoint::operator+=(const CurvePoint &point){
         case 0: // Short curve
         {
             int ret = 0;
-            if (this->IsInfinity()) {
-                *this = point;
-            }
-            else if (!point.IsInfinity()) {
-                if ((ret = safeheron::_openssl_curve_wrapper::point_add(curve_grp_, point.short_point_, short_point_)) != 0) {
-                    throw OpensslException(__FILE__, __LINE__, __FUNCTION__, ret);
-                }
+            if ((ret = EC_POINT_add(curve_grp_, short_point_, point.short_point_, short_point_, nullptr)) != 1) {
+                throw OpensslException(__FILE__, __LINE__, __FUNCTION__, ret);
             }
             break;
         }
@@ -593,7 +591,7 @@ CurvePoint &CurvePoint::operator*=(const safeheron::bignum::BN &bn){
         {
             int ret = 0;
             BN k = bn % curv->n;
-            if ((ret = safeheron::_openssl_curve_wrapper::point_multiply(curve_grp_, k.GetBIGNUM(), short_point_, short_point_)) != 0) {
+            if ((ret = EC_POINT_mul(curve_grp_, short_point_, nullptr, short_point_, k.GetBIGNUM(), nullptr)) != 1) {
                 throw OpensslException(__FILE__, __LINE__, __FUNCTION__, ret);
             }
             break;
