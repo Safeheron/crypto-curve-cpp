@@ -21,7 +21,7 @@ namespace curve{
  */
 enum class CurveType: uint32_t {
     // 0, invalid
-    INVALID_CURVE,
+    INVALID_CURVE = 0xFFFFFFFF,
     // 1 ~ 2^5-1, short curve
     SECP256K1 = 1,
     P256 = 2,

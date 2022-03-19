@@ -105,12 +105,13 @@ CurvePoint::CurvePoint(const CurvePoint &point) {
 
     curve_type_ = point.curve_type_;
     curve_grp_ = safeheron::curve::GetCurveGroup(curve_type_);
+    if(point.curve_type_ == CurveType::INVALID_CURVE) return;
 
     uint category = get_category(curve_type_);
     switch (category) {
         case 0: // Short curve
         {
-            if (!(short_point_ = EC_POINT_dup(point.short_point_, curve_grp_))) {
+            if (!(short_point_ = EC_POINT_dup(point.short_point_, point.curve_grp_))) {
                 throw OpensslException(__FILE__, __LINE__, __FUNCTION__, -1);
             }
             break;
@@ -177,12 +178,13 @@ CurvePoint &CurvePoint::operator=(const CurvePoint &point) {
     Reset();
     curve_type_ = point.curve_type_;
     curve_grp_ = point.curve_grp_;
+    if(point.curve_type_ == CurveType::INVALID_CURVE) return *this;
 
     uint category = get_category(curve_type_);
     switch (category) {
         case 0: // Short curve
         {
-            if (!(short_point_ = EC_POINT_dup(point.short_point_, curve_grp_))) {
+            if (!(short_point_ = EC_POINT_dup(point.short_point_, point.curve_grp_))) {
                 throw OpensslException(__FILE__, __LINE__, __FUNCTION__, -1);
             }
             break;
