@@ -25,6 +25,7 @@ Linux and Mac are supported now.  After obtaining the Source, have a look at the
 git clone https://github.com/safeheron/crypto-curve-cpp.git
 cd crypto-curve-cpp
 mkdir build && cd build
+# Run "cmake .. -DOPENSSL_ROOT_DIR=Your-Root-Directory-of-OPENSSL" instead of the command below on Mac OS.
 cmake ..
 # Add the path to the LD_LIBRARY_PATH environment variable on Mac OS; Ignore it on Linux
 export LIBRARY_PATH=$LIBRARY_PATH:/usr/local/lib/
