@@ -1,6 +1,7 @@
 # crypto-curve-cpp
 
-# Abstract
+![img](doc/logo.png)
+
 This software implements a library for elliptic curves based cryptography (ECC).
 - It contains an extremely simple mathematical interface to onboard new elliptic curves. Use this library for general purpose elliptic curve cryptography.
 - It provides interfaces on ecdsa to Sepcp256k1 and P256.
