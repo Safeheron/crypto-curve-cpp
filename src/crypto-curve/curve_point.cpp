@@ -26,12 +26,12 @@ using safeheron::bignum::BN;
 namespace safeheron{
 namespace curve {
 
-        /**
+/**
  * 0 -  short curve
  * 1 -  edwards curve
  * 2 -  montgomery curve
  */
-uint get_category(CurveType curveType){
+static uint get_category(CurveType curveType){
     uint category = static_cast<uint32_t>(curveType) >> 5;
     return category;
 }
@@ -127,7 +127,6 @@ CurvePoint::CurvePoint(const CurvePoint &point) {
     }
 }
 
-// not suggested, not safe
 CurvePoint::CurvePoint(const safeheron::bignum::BN &x, const safeheron::bignum::BN &y, CurveType c_type)
 {
     memset(&edwards_point_, 0, sizeof(edwards_point_));

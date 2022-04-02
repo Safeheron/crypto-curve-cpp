@@ -44,18 +44,61 @@ class CurvePoint {
 
 public:
     /********************  constructor, destructor, assignment  ***********************/
-    explicit CurvePoint(); // You will get an invalid CurvePoint.( obj.IsValid() == false )
+    /**
+     * An blank CurvePoint will be created, that means:
+     *      CurvePoint point;
+     *      assert(!point.IsValid());
+     * It shouldn't be used for arithmetical operations.
+     */
+    explicit CurvePoint();
+
+    /**
+     * An CurvePoint on Curve of "c_type" will be created, which will be initiated as an infinity point.
+     *
+     *      CurvePoint point(CurveType::SECP256K1);
+     *      assert(point.IsValid());
+     *      assert(point.IsInfinity());
+     *
+     * @param c_type type of the curve
+     */
     explicit CurvePoint(CurveType c_type);
+
+    /**
+     * Copy constructor.
+     * @param point
+     */
     CurvePoint(const CurvePoint &point);            // copy constructor
-    // Be careful! "CurvePoint::ValidatePoint" should be invoked firstly.
-    // not suggested, not safe
+
+    /**
+     * The constructor should be used carefully, usually invoked after the function "CurvePoint::ValidatePoint".
+     *
+     * For example:
+     *
+     *      if(!CurvePoint::ValidatePoint(x, y, cType)) return false;
+     *      CurvePoint point(x, y, cType);
+     *
+     * @param x coordinate x of the curve point
+     * @param y coordinate y of the curve point
+     * @param c_type type of the curve
+     */
     explicit CurvePoint(const safeheron::bignum::BN &x, const safeheron::bignum::BN &y, CurveType c_type);
+
+    /**
+     * Copy assignment.
+     * @param point
+     * @return
+     */
     CurvePoint &operator=(const CurvePoint &point); // copy assignment
-    //CurvePoint(CurvePoint &&num) noexcept;           // move constructor, unnecessary
-    //CurvePoint &operator=(CurvePoint &&point) noexcept;// move assignment, unnecessary
+    //CurvePoint(CurvePoint &&num) noexcept;           // move constructor
+    //CurvePoint &operator=(CurvePoint &&point) noexcept;// move assignment
+
+    // Destructor.
     ~CurvePoint();
 
+    // Return the type of the curve.
     CurveType GetCurveType() const;
+
+    // Return the handler of the group.
     const ec_group_st* GetEcdsaCurveGrp() const;
 
     /**
@@ -67,15 +110,15 @@ public:
     std::string Inspect() const;
 
     /********************** encode, decode and validate  ******************************/
-    // If the curve point is valid
+    // Check if the curve point is valid
     bool IsValid() const;
 
     /**
-     * If the point with specified x and y is valid
+     * Check if the point with specified x and y is valid
      * @param x
      * @param y
      * @param c_type
-     * @return
+     * @return true if it's a valid curve point, false otherwise.
      */
     static bool ValidatePoint(const safeheron::bignum::BN &x, const safeheron::bignum::BN &y, CurveType c_type);
     bool PointFromXY(const safeheron::bignum::BN &x, const safeheron::bignum::BN &y, CurveType c_type);
@@ -104,63 +147,184 @@ public:
      */
     bool PointFromY(safeheron::bignum::BN &y, bool xIsOdd, CurveType c_type);
 
-    // Compressed public key (33 bytes)
+    /**
+     * Encode the point into 33 bytes(compressed format).
+     * @param pub33
+     */
     void EncodeCompressed(uint8_t* pub33) const;
+
+    /**
+     * Decode the point from 33 bytes(compressed format).
+     * @param pub33
+     */
     bool DecodeCompressed(const uint8_t* pub33, CurveType c_type);
 
-    // Full public key (65 bytes)
+    /**
+     * Encode the point into 65 bytes(full public key).
+     * @param pub33
+     */
     void EncodeFull(uint8_t* pub65) const;
+
+    /**
+     * Decode the point from 65 bytes(full public key).
+     * @param pub33
+     */
     bool DecodeFull(const uint8_t* pub65, CurveType c_type);
 
-    // Only for edwards point
+    /**
+     * Encode the edwards point into 32 bytes.
+     * @param pub33
+     */
     void EncodeEdwardsPoint(uint8_t *pub32) const;
+
+    /**
+     * Decode the edwards point from 32 bytes.
+     * @param pub33
+     */
     bool DecodeEdwardsPoint(uint8_t *pub32, CurveType c_type);
 
     /***************************  addition, multiplication...  ****************************/
-    // Res = P1 + P2
+    /**
+     * Addition on curve: Res = P1 + P2
+     * @param point
+     * @return Res = *this + point
+     */
     CurvePoint operator+(const CurvePoint &point) const;
-    // Res = P1 - P2
+
+    /**
+     * Subtraction on curve: Res = P1 - P2
+     * @param point
+     * @return Res = *this - point
+     */
     CurvePoint operator-(const CurvePoint &point) const;
-    // Res = P1 * n
+
+    /**
+     * Multiplication on curve: Res = P1 * n
+     * @param point
+     * @return Res = (*this) * bn
+     */
     CurvePoint operator*(const safeheron::bignum::BN &bn) const;
-    // Res = P1 * n
+
+    /**
+     * Multiplication on curve: Res = P1 * n
+     * @param point
+     * @return Res = (*this) * n
+     */
     CurvePoint operator*(long n) const;
 
-    // P1 += P2
+    /**
+     * Self-Addition on curve: P1 += P2
+     * @param point
+     * @return *this += point
+     */
     CurvePoint &operator+=(const CurvePoint &point);
-    // P1 -= P2
+
+    /**
+     * Self-Subtraction on curve: P1 -= P2
+     * @param point
+     * @return *this -= point
+     */
+
     CurvePoint &operator-=(const CurvePoint &point);
-    // P1 *= n
+
+    /**
+     * Self-Multiplication on curve: P1 *= n
+     * @param point
+     * @return *this *= bn
+     */
     CurvePoint &operator*=(const safeheron::bignum::BN &bn);
-    // P1 *= n
+
+    /**
+     * Self-Multiplication on curve: P1 *= n
+     * @param point
+     * @return *this *= bn
+     */
     CurvePoint &operator*=(long n);
 
-    // P1 = -P1
+    /**
+     * P1 = -P1
+     * @return negative of the point.
+     */
     CurvePoint neg() const;
 
-    // P1 == P2
+    /**
+     * Compare the two points: P1 == P2
+     * @param point
+     * @return  true if *this == point; false otherwise.
+     */
+
     bool operator==(const CurvePoint &point) const;
-    // P1 != P2
+
+    /**
+     * Compare the two points: P1 != P2
+     * @param point
+     * @return  true if *this != point; false otherwise.
+     */
     bool operator!=(const CurvePoint &point) const;
 
 
     /***************************  get coordinate x, y  **************************************/
-    // Get coordinate x, y
+    // Get coordinate x of the point
     safeheron::bignum::BN x() const;
+
+    // Get coordinate x of the point
     safeheron::bignum::BN y() const;
 
 
     /***************************  serialization and deserialization ************************/
+    /**
+     * Serialize the point to proto object.
+     * @param curvePoint
+     * @return true if no check fails; false otherwise.
+     */
     bool ToProtoObject(safeheron::proto::CurvePoint &curvePoint) const;
+
+    /**
+     * Deserialize the point from proto object.
+     * @param curvePoint
+     * @return true if no check fails; false otherwise.
+     */
     bool FromProtoObject(const safeheron::proto::CurvePoint &curvePoint);
 
+    /**
+     * Serialize the point to base64 string.
+     * @param curvePoint
+     * @return true if no check fails; false otherwise.
+     */
     bool ToBase64(std::string& base64) const;
+
     bool FromBase64(const std::string& base64);
 
+    /**
+     * Serialize the point to json.
+     * @param curvePoint
+     * @return true if no check fails; false otherwise.
+     */
     bool ToJsonString(std::string &json_str) const;
+
+    /**
+     * Deserialize the point from json.
+     * @param curvePoint
+     * @return true if no check fails; false otherwise.
+     */
     bool FromJsonString(const std::string &json_str);
 
 private:
+    /**
+     * Reset the state of the point.
+     * For example:
+     *
+     * CurvePoint p0();
+     * assert(!p0.IsValid());
+     *
+     * CurvePoint p1(CurveType::SECP256K1);
+     * assert(p1.IsValid());
+     * assert(p1.IsInfinity());
+     * p1.Reset();
+     * assert(!p1.IsValid());
+     * assert(p1 == p0);
+     *
+     */
     void Reset();
 
 };
