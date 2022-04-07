@@ -25,6 +25,7 @@ Linux and Mac are supported now.  After obtaining the Source, have a look at the
 ```shell
 git clone https://github.com/safeheron/crypto-curve-cpp.git
 cd crypto-curve-cpp
+git submodule update --init --recursive 
 mkdir build && cd build
 # Run "cmake .. -DOPENSSL_ROOT_DIR=Your-Root-Directory-of-OPENSSL" instead of the command below on Mac OS.
 cmake ..
