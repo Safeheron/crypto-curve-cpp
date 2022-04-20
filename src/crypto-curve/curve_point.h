@@ -31,8 +31,8 @@ enum class CurveType: uint32_t {
     // 2^5 ~ 2^6-1, edwards curve
     ED25519 = 32,
     // 2^6 ~ 2^6+2^5-1, montgomery curve
-    BLSG1  = 64,
-    BLSG2  = 128,
+    BLSG1  = 64,     //2
+    BLSG2  = 96,     //3
 };
 
 

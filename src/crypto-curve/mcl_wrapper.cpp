@@ -25,7 +25,6 @@ bool mcl_Init(){
 ///////////////////////////////////////////////////////////////////
 bool mcl_RandomInitG1(BLS_G1& g1,const void *buf, size_t bufSize){
     mcl::bls12::hashAndMapToG1(g1, buf,bufSize);
-    cout<<g1.x.serializeToHexStr().c_str() <<endl;
     return true;
 }
 bool mcl_RandomInitG2(BLS_G2& g2,const void *buf, size_t bufSize){
@@ -107,25 +106,25 @@ bool mcl_G2Valid(const safeheron::bignum::BN &x,const safeheron::bignum::BN &y)
 bool mcl_GetG1X(safeheron::bignum::BN &bn, BLS_G1 g1)
 {
     g1.normalize();
-    bn = safeheron::bignum::BN::FromHexStr(g1.x.serializeToHexStr());
+    bn = safeheron::bignum::BN::FromHexStr(g1.x.getStr(16));
     return true; 
 }
 bool mcl_GetG1Y(safeheron::bignum::BN &bn, BLS_G1 g1)
 {
     g1.normalize();
-    bn = safeheron::bignum::BN::FromHexStr(g1.y.serializeToHexStr());
+    bn = safeheron::bignum::BN::FromHexStr(g1.y.getStr(16));
     return true; 
 }
 
 bool mcl_GetG2X(safeheron::bignum::BN &bn, BLS_G2 g2)
 {
     g2.normalize();
-    bn = safeheron::bignum::BN::FromHexStr(g2.x.serializeToHexStr());
+    bn = safeheron::bignum::BN::FromHexStr(g2.x.getStr(16));
     return true; 
 }
 bool mcl_GetG2Y(safeheron::bignum::BN &bn, BLS_G2 g2)
 {
     g2.normalize();
-    bn = safeheron::bignum::BN::FromHexStr(g2.y.serializeToHexStr());
+    bn = safeheron::bignum::BN::FromHexStr(g2.y.getStr(16));
     return true; 
 }

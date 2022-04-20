@@ -259,7 +259,6 @@ CurvePoint::~CurvePoint() {
 
 void CurvePoint::RandomInit(const void *buf, size_t bufSize){
     uint category = get_category(curve_type_);
-    std::cout<<"category " <<category<<std::endl;
     if(category ==  2){
         mcl_RandomInitG1(bls_g1_,buf,bufSize);
     }
@@ -946,6 +945,7 @@ bool CurvePoint::ToProtoObject(safeheron::proto::CurvePoint &point) const {
 bool CurvePoint::FromProtoObject(const safeheron::proto::CurvePoint &point) {
     BN x = BN::FromHexStr(point.x());
     BN y = BN::FromHexStr(point.y());
+
     CurveType c_type = CurveType::INVALID_CURVE;
     if(strncasecmp(point.curve().c_str(), "secp256k1", point.curve().length()) == 0){
         c_type = CurveType::SECP256K1;
@@ -958,6 +958,7 @@ bool CurvePoint::FromProtoObject(const safeheron::proto::CurvePoint &point) {
     }else if(strncasecmp(point.curve().c_str(), "blsg2", point.curve().length()) == 0) {
         c_type = CurveType::BLSG2;
     }
+
     if(!CurvePoint::ValidatePoint(x, y, c_type)) return false;
     CurvePoint t_point(x, y, c_type);
     *this = t_point;
