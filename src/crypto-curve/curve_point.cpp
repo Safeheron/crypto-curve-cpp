@@ -10,9 +10,12 @@
 #include <google/protobuf/util/json_util.h>
 #include "crypto-encode/base64.h"
 #include "openssl_curve_wrapper.h"
+#include "mcl_wrapper.h"
 #include "ed25519_ex.h"
 #include "curve.h"
 #include "exception/safeheron_exceptions.h"
+
+
 
 using std::string;
 using google::protobuf::util::Status;
@@ -23,6 +26,9 @@ using google::protobuf::util::JsonParseOptions;
 using safeheron::exception::OpensslException;
 using safeheron::bignum::BN;
 
+//using namespace mcl;
+
+
 namespace safeheron{
 namespace curve {
 
@@ -30,6 +36,7 @@ namespace curve {
  * 0 -  short curve
  * 1 -  edwards curve
  * 2 -  montgomery curve
+ * 3 -  bls curve 
  */
 static uint get_category(CurveType curveType){
     uint category = static_cast<uint32_t>(curveType) >> 5;
@@ -47,6 +54,12 @@ void CurvePoint::Reset() {
         short_point_ = nullptr;
     }
     memset(edwards_point_, 0, sizeof(edwards_point_));
+    if( 2 == category){
+        bls_g1_.clear();
+    }
+    if( 3 == category){
+        bls_g2_.clear();
+    }
     
     curve_type_ = CurveType::INVALID_CURVE;
     curve_grp_ = nullptr;
@@ -64,6 +77,8 @@ CurvePoint::CurvePoint() {
     curve_type_ = CurveType::INVALID_CURVE;
     memset(edwards_point_, 0, sizeof(edwards_point_));
     curve_grp_ = nullptr;
+    bls_g1_.clear();
+    bls_g2_.clear();
 }
 
 CurvePoint::CurvePoint(CurveType c_type) {
@@ -95,6 +110,16 @@ CurvePoint::CurvePoint(CurveType c_type) {
             edwards_point_[0] = 1;
             break;
         }
+        case 2:
+        {
+            bls_g1_.clear();
+            break;
+        }
+        case 3:
+        {
+            bls_g2_.clear();
+            break;
+        }
         default:
             break;
     }
@@ -121,6 +146,14 @@ CurvePoint::CurvePoint(const CurvePoint &point) {
             // For Ed25519
             memcpy(&edwards_point_, &point.edwards_point_, sizeof(edwards_point_));
             break;
+        }
+        case 2:
+        {
+            bls_g1_ = point.bls_g1_;
+        }
+        case 3:
+        {
+            bls_g2_ = point.bls_g2_;
         }
         default:
             break;
@@ -165,6 +198,16 @@ CurvePoint::CurvePoint(const safeheron::bignum::BN &x, const safeheron::bignum::
             edwards_point_[31] ^= x.IsOdd() ? 0x80 : 0x00;
             break;
         }
+        case 2:
+        {
+            mcl_XYInitG1(bls_g1_,x,y);
+            break;
+        }
+        case 3:
+        {
+            mcl_XYInitG2(bls_g2_,x,y);
+            break;
+        }
         default:
             break;
     }
@@ -194,6 +237,16 @@ CurvePoint &CurvePoint::operator=(const CurvePoint &point) {
             memcpy(&edwards_point_, &point.edwards_point_, sizeof(edwards_point_));
             break;
         }
+        case 2:
+        {
+            bls_g1_ = point.bls_g1_;
+            break;
+        }
+        case 3:
+        {
+            bls_g2_ = point.bls_g2_;
+            break;
+        }
         default:
             break;
     }
@@ -202,6 +255,17 @@ CurvePoint &CurvePoint::operator=(const CurvePoint &point) {
 
 CurvePoint::~CurvePoint() {
     Reset();
+}
+
+void CurvePoint::RandomInit(const void *buf, size_t bufSize){
+    uint category = get_category(curve_type_);
+    std::cout<<"category " <<category<<std::endl;
+    if(category ==  2){
+        mcl_RandomInitG1(bls_g1_,buf,bufSize);
+    }
+    if(category ==  3){
+        mcl_RandomInitG2(bls_g2_,buf,bufSize);
+    }
 }
 
 std::string CurvePoint::Inspect() const {
@@ -215,6 +279,12 @@ std::string CurvePoint::Inspect() const {
 
     if (curve_type_ == CurveType::ED25519) {
         c_name = "\ncurve ed25519";
+    }
+    if (curve_type_ == CurveType::BLSG1) {
+        c_name = "\ncurve bls g1";
+    }
+    if (curve_type_ == CurveType::BLSG2) {
+        c_name = "\ncurve bls g2";
     }
     x().ToHexStr(x_str);
     y().ToHexStr(y_str);
@@ -255,6 +325,14 @@ bool CurvePoint::ValidatePoint(const safeheron::bignum::BN &x, const safeheron::
             BN right = (curv->d * x_sqr_y_sqr + 1) % curv->p;
             return left == right;
         }
+        case 2:
+        {
+            return mcl_G1Valid(x,y);
+        }
+        case 3:
+        {
+            return mcl_G2Valid(x,y);
+        }
         default:
             return false;
     }
@@ -286,6 +364,14 @@ bool CurvePoint::IsInfinity() const {
                 ret = ret && (edwards_point_[i] == 0);
             }
             return ret;
+        }
+        case 2:
+        {
+            return bls_g1_.isZero();
+        }
+        case 3:
+        {
+            return bls_g2_.isZero();
         }
         default:
             return false;
@@ -499,6 +585,16 @@ CurvePoint CurvePoint::operator+(const CurvePoint &point) const {
             ed25519_cosi_combine_two_publickeys(res.edwards_point_, edwards_point_, point.edwards_point_);
             break;
         }
+        case 2:
+        {
+            mcl_G1Add(res.bls_g1_,bls_g1_,point.bls_g1_);
+            break;
+        }
+        case 3:
+        {
+            mcl_G2Add(res.bls_g2_,bls_g2_,point.bls_g2_);
+            break;
+        }
         default:
             break;
     }
@@ -540,6 +636,16 @@ CurvePoint CurvePoint::operator*(const safeheron::bignum::BN &bn) const {
             }
             break;
         }
+        case 2:
+        {
+            mcl_G1Mul(res.bls_g1_,bls_g1_,bn);
+            break;
+        }
+        case 3:
+        {
+            mcl_G2Mul(res.bls_g2_,bls_g2_,bn);
+            break;
+        }
         default:
             break;
     }
@@ -568,6 +674,16 @@ CurvePoint &CurvePoint::operator+=(const CurvePoint &point){
         {
             // For Ed25519
             ed25519_cosi_combine_two_publickeys(edwards_point_, edwards_point_, point.edwards_point_);
+            break;
+        }
+        case 2:
+        {
+            mcl_G1Add(bls_g1_,bls_g1_,point.bls_g1_);
+            break;
+        }
+        case 3:
+        {
+            mcl_G2Add(bls_g2_,bls_g2_,point.bls_g2_);
             break;
         }
         default:
@@ -605,6 +721,16 @@ CurvePoint &CurvePoint::operator*=(const safeheron::bignum::BN &bn){
             ed25519_scalarmult_pure(edwards_point_, sk, edwards_point_);
             break;
         }
+        case 2:
+        {
+            mcl_G1Mul(bls_g1_,bls_g1_,bn);
+            break;
+        }
+        case 3:
+        {
+            mcl_G2Mul(bls_g2_,bls_g2_,bn);
+            break;
+        }
         default:
             break;
     }
@@ -639,6 +765,16 @@ CurvePoint CurvePoint::neg() const {
             ed25519_publickey_neg(res.edwards_point_, (unsigned char *)edwards_point_);
             break;
         }
+        case 2:
+        {
+            mcl_G1Neg(res.bls_g1_,bls_g1_);
+            break;
+        }
+        case 3:
+        {
+            mcl_G2Neg(res.bls_g2_,bls_g2_);
+            break;
+        }
         default:
             break;
     }
@@ -661,6 +797,16 @@ bool CurvePoint::operator==(const CurvePoint &point) const {
         case 1: // Edwards curve
         {
             same_mem = (memcmp((const void *)&edwards_point_, (const void *)&point.edwards_point_, sizeof(ed25519_public_key)) == 0);
+            break;
+        }
+        case 2:
+        {
+            same_mem = (bls_g1_ == point.bls_g1_);
+            break;
+        }
+        case 3:
+        {
+            same_mem = (bls_g2_ == point.bls_g2_);
             break;
         }
         default:
@@ -711,6 +857,19 @@ safeheron::bignum::BN CurvePoint::x() const {
             }
             return x;
         }
+        case 2:
+        {
+            BN x;
+            mcl_GetG1X(x,bls_g1_);
+            return x;
+        }
+        case 3:
+        {
+            BN x;
+            mcl_GetG2X(x,bls_g2_);
+            return x;
+
+        }
         default:
             return safeheron::bignum::BN::MINUS_ONE;
     }
@@ -738,6 +897,19 @@ safeheron::bignum::BN CurvePoint::y() const {
             point_y[31] &= 0x7f;
             return BN::FromBytesLE(point_y, 32);
         }
+        case 2:
+        {
+            BN y;
+            mcl_GetG1Y(y,bls_g1_);
+            return y;
+        }
+        case 3:
+        {
+            BN y;
+            mcl_GetG2Y(y,bls_g2_);
+            return y;
+
+        }
         default:
             return safeheron::bignum::BN::MINUS_ONE;
     }
@@ -758,6 +930,12 @@ bool CurvePoint::ToProtoObject(safeheron::proto::CurvePoint &point) const {
         case CurveType::ED25519:
             point.set_curve("ed25519");
             break;
+        case CurveType::BLSG1:
+            point.set_curve("blsg1");
+            break;
+        case CurveType::BLSG2:
+            point.set_curve("blsg2");
+            break;
         case CurveType::INVALID_CURVE:
             // Can't touch
             break;
@@ -775,6 +953,10 @@ bool CurvePoint::FromProtoObject(const safeheron::proto::CurvePoint &point) {
         c_type = CurveType::P256;
     }else if(strncasecmp(point.curve().c_str(), "ed25519", point.curve().length()) == 0) {
         c_type = CurveType::ED25519;
+    }else if(strncasecmp(point.curve().c_str(), "blsg1", point.curve().length()) == 0) {
+        c_type = CurveType::BLSG1;
+    }else if(strncasecmp(point.curve().c_str(), "blsg2", point.curve().length()) == 0) {
+        c_type = CurveType::BLSG2;
     }
     if(!CurvePoint::ValidatePoint(x, y, c_type)) return false;
     CurvePoint t_point(x, y, c_type);

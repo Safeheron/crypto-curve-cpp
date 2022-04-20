@@ -29,6 +29,7 @@ add_library(${CMAKE_PROJECT_NAME} SHARED
         crypto-curve/openssl_curve_wrapper.cpp
         crypto-curve/ecdsa.cpp
         crypto-curve/eddsa.cpp
+        crypto-curve/mcl_wrapper.cpp
         ${ed25519-donna_SOURCES}
 )
 
@@ -42,6 +43,8 @@ target_include_directories(${CMAKE_PROJECT_NAME} PUBLIC
         ${CryptoBN_INCLUDE_DIRS}
         ${PROTOBUF_INCLUDE_DIRS}
         )
+target_compile_options(${CMAKE_PROJECT_NAME} PUBLIC ${MCL_COMPILE_OPTIONS})
+target_compile_definitions(${CMAKE_PROJECT_NAME} PUBLIC MCL_USE_VINT MCL_VINT_FIXED_BUFFER)
 
 TARGET_LINK_LIBRARIES(${CMAKE_PROJECT_NAME}
         CryptoBN
@@ -49,4 +52,5 @@ TARGET_LINK_LIBRARIES(${CMAKE_PROJECT_NAME}
         ${PROTOBUF_LIBRARIES}
         OpenSSL::Crypto
         -ldl
+        libmcl.a
         )

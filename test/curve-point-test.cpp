@@ -1,6 +1,7 @@
 //
 // Created by 何剑虹 on 2020/10/22.
 //
+#include <iostream>
 #include <cstring>
 #include <google/protobuf/stubs/common.h>
 #include "gtest/gtest.h"
@@ -8,10 +9,12 @@
 #include "safeheron/crypto-encode/hex.h"
 #include "../src/crypto-curve/curve.h"
 
+
 using safeheron::bignum::BN;
 using safeheron::curve::Curve;
 using safeheron::curve::CurvePoint;
 using safeheron::curve::CurveType;
+using namespace std;
 
 void testCurveParameter(
         CurveType cType,
@@ -437,9 +440,57 @@ TEST(CurvePoint, Infinity)
     testInifnity(CurveType::P256);
 }
 
+void temptest(){
+    
+    //testNeg(CurveType::BLSG1);
+    //testNeg(CurveType::BLSG2);
+
+    CurvePoint p0(CurveType::BLSG1);
+    cout<<p0.IsValid()<<endl;
+    cout<<p0.IsInfinity()<<endl;
+    p0.RandomInit("123",3);
+
+    cout<<p0.IsValid()<<endl;
+    cout<<p0.IsInfinity()<<endl;
+
+    std::string str;
+    p0.x().ToHexStr(str);
+    std::cout << "p0.x = " << str << std::endl;
+    p0.y().ToHexStr(str);
+    std::cout << "p0.y = " << str << std::endl;
+
+    CurvePoint b = p0 * 2;
+    b.x().ToHexStr(str);
+    std::cout << "b.x = " << str << std::endl;
+    b.y().ToHexStr(str);
+    std::cout << "b.y = " << str << std::endl;
+
+    CurvePoint b1 = p0 + p0;
+    b1.x().ToHexStr(str);
+    std::cout << "b1.x = " << str << std::endl;
+    b1.y().ToHexStr(str);
+    std::cout << "b1.y = " << str << std::endl;
+
+    CurvePoint b2 = p0.neg();
+    b2.x().ToHexStr(str);
+    std::cout << "b2.x = " << str << std::endl;
+    b2.y().ToHexStr(str);
+    std::cout << "b2.y = " << str << std::endl;
+
+    CurvePoint b3 = p0 - b;
+    b3.x().ToHexStr(str);
+    std::cout << "b3.x = " << str << std::endl;
+    b3.y().ToHexStr(str);
+    std::cout << "b3.y = " << str << std::endl;
+
+}
+
 int main(int argc, char **argv) {
-    ::testing::InitGoogleTest(&argc, argv);
-    int ret = RUN_ALL_TESTS();
+    //::testing::InitGoogleTest(&argc, argv);
+    //int ret = RUN_ALL_TESTS();
+    int ret = 0;
+    safeheron::curve::CurveInit();
+    temptest();
     google::protobuf::ShutdownProtobufLibrary();
     return ret;
 }

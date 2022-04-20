@@ -7,11 +7,14 @@
 
 #include "crypto-bn/bn.h"
 #include "curve_point.pb.h"
+#include "mcl_wrapper.h"
 
 struct ec_group_st;
 struct ec_point_st;
 
 typedef unsigned char ed25519_public_key_byte32[32];
+
+
 
 namespace safeheron{
 namespace curve{
@@ -28,7 +31,15 @@ enum class CurveType: uint32_t {
     // 2^5 ~ 2^6-1, edwards curve
     ED25519 = 32,
     // 2^6 ~ 2^6+2^5-1, montgomery curve
+    BLSG1  = 64,
+    BLSG2  = 128,
 };
+
+
+inline void CurveInit()
+{
+	mcl_Init();
+}
 
 //class 
 /**
@@ -40,6 +51,10 @@ class CurvePoint {
     union {
         ec_point_st* short_point_;
         ed25519_public_key_byte32 edwards_point_;
+    };
+    union {
+        BLS_G1 bls_g1_;
+        BLS_G2 bls_g2_;
     };
 
 public:
@@ -83,6 +98,7 @@ public:
      */
     explicit CurvePoint(const safeheron::bignum::BN &x, const safeheron::bignum::BN &y, CurveType c_type);
 
+
     /**
      * Copy assignment.
      * @param point
@@ -108,6 +124,8 @@ public:
      * @return
      */
     std::string Inspect() const;
+
+    void RandomInit(const void *buf, size_t bufSize);
 
     /********************** encode, decode and validate  ******************************/
     // Check if the curve point is valid
