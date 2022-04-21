@@ -2,18 +2,19 @@
 #include <iostream>
 using namespace std;
 
+
 bool mcl_BNToFp(mcl::bls12::Fp & f,const safeheron::bignum::BN &bn){
     //if(bn.BitLength() > mcl::bls12::MCL_MAX_FP_BIT_SIZE
     string bnstr;
     bn.ToHexStr(bnstr);
-    f.setStr(bnstr.c_str(),16);
+    f.setStr(bnstr,16);
     return true;
 }
 bool mcl_BNToFp2(mcl::bls12::Fp2 & f,const safeheron::bignum::BN &bn){
     //if(bn.BitLength() > mcl::bls12::MCL_MAX_FP_BIT_SIZE
     string bnstr;
     bn.ToHexStr(bnstr);
-    f.setStr(bnstr.c_str(),16);
+    f.deserializeHexStr(bnstr);
     return true;
 }
 
@@ -119,12 +120,18 @@ bool mcl_GetG1Y(safeheron::bignum::BN &bn, BLS_G1 g1)
 bool mcl_GetG2X(safeheron::bignum::BN &bn, BLS_G2 g2)
 {
     g2.normalize();
-    bn = safeheron::bignum::BN::FromHexStr(g2.x.getStr(16));
+    bn = safeheron::bignum::BN::FromHexStr(g2.x.serializeToHexStr());
     return true; 
 }
 bool mcl_GetG2Y(safeheron::bignum::BN &bn, BLS_G2 g2)
 {
     g2.normalize();
-    bn = safeheron::bignum::BN::FromHexStr(g2.y.getStr(16));
+    bn = safeheron::bignum::BN::FromHexStr(g2.y.serializeToHexStr());
     return true; 
+}
+
+bool mcl_Pairing(BLS_E& f, const BLS_G1& P, const BLS_G2& Q)
+{
+    mcl::bls12::pairing(f,P,Q);
+    return true;
 }

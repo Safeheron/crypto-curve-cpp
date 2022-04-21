@@ -441,7 +441,18 @@ TEST(CurvePoint, Infinity)
 }
 
 void testBLS(CurveType type){
-    
+
+    /*mcl::bls12::Fp aa;
+	//string str = "ddfda4ba71eb6b1ff1d8d6dcbd2c480206298c7d0e82fcd942ed0f03eb18ff85bb0ea05b2bf0086703e5a45c5bb2150";
+	string str1 = "0203";
+	aa.setStr(str1,16);
+	cout<<aa.getStr(16).c_str() <<endl;
+	cout<<aa.serializeToHexStr().c_str() <<endl;
+    BN bb =  BN::FromHexStr(str1);
+    string pstr;
+    bb.ToHexStr(pstr);
+    cout<< " -- "<< pstr<<endl;*/
+
 
     CurvePoint p0(type);
     EXPECT_TRUE(p0.IsValid() == 1);
@@ -489,11 +500,16 @@ void testBLS(CurveType type){
     EXPECT_TRUE(b3.ToBase64(base64));
     EXPECT_TRUE(b4.FromBase64(base64));
     EXPECT_TRUE(b3 == b4);
+
+    std::string jsonStr;
+    EXPECT_TRUE(b3.ToJsonString(jsonStr));
+    EXPECT_TRUE(b4.FromJsonString(jsonStr));
+    EXPECT_TRUE(b3 == b4);
 }
 TEST(CurvePoint, BLS)
 {
     testBLS(CurveType::BLSG1);
-    //testBLS(CurveType::BLSG2);
+    testBLS(CurveType::BLSG2);
 }
 
 int main(int argc, char **argv) {

@@ -6,6 +6,7 @@
 
 typedef mcl::bls12::G1  BLS_G1;
 typedef mcl::bls12::G2  BLS_G2;
+typedef mcl::bls12::Fp12  BLS_E;
 
 bool mcl_Init();
 
@@ -33,6 +34,7 @@ bool mcl_GetG1Y(safeheron::bignum::BN &bn, BLS_G1 g1);
 bool mcl_GetG2X(safeheron::bignum::BN &bn, BLS_G2 g2);
 bool mcl_GetG2Y(safeheron::bignum::BN &bn, BLS_G2 g2);
 
+bool mcl_Pairing(BLS_E& f, const BLS_G1& P, const BLS_G2& Q);
 
 
 #endif //_SAFEHERON_MCL_WRAPPER_H_
