@@ -9,6 +9,7 @@
 #include "curve_point.h"
 #include "ecdsa.h"
 #include "eddsa.h"
+#include "mcl_wrapper.h"
 
 namespace safeheron{
 namespace curve {
@@ -33,7 +34,6 @@ public:
           CurvePoint _g);
     ~Curve();
 };
-
 
 /**
  * 0, invalid

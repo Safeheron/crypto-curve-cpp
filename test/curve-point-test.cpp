@@ -8,6 +8,8 @@
 #include "safeheron/crypto-bn/rand.h"
 #include "safeheron/crypto-encode/hex.h"
 #include "../src/crypto-curve/curve.h"
+#include "../src/crypto-curve/bls12381.h"
+
 
 
 using safeheron::bignum::BN;
@@ -442,22 +444,10 @@ TEST(CurvePoint, Infinity)
 
 void testBLS(CurveType type){
 
-    /*mcl::bls12::Fp aa;
-	//string str = "ddfda4ba71eb6b1ff1d8d6dcbd2c480206298c7d0e82fcd942ed0f03eb18ff85bb0ea05b2bf0086703e5a45c5bb2150";
-	string str1 = "0203";
-	aa.setStr(str1,16);
-	cout<<aa.getStr(16).c_str() <<endl;
-	cout<<aa.serializeToHexStr().c_str() <<endl;
-    BN bb =  BN::FromHexStr(str1);
-    string pstr;
-    bb.ToHexStr(pstr);
-    cout<< " -- "<< pstr<<endl;*/
-
-
     CurvePoint p0(type);
     EXPECT_TRUE(p0.IsValid() == 1);
     EXPECT_TRUE(p0.IsInfinity() == 1);
-    p0.RandomInit("123",3);
+    p0.HashAndMapToG("123",3);
     EXPECT_TRUE(p0.IsValid() == 1);
     EXPECT_TRUE(p0.IsInfinity() == 0);
 
@@ -506,15 +496,42 @@ void testBLS(CurveType type){
     EXPECT_TRUE(b4.FromJsonString(jsonStr));
     EXPECT_TRUE(b3 == b4);
 }
+
+void testBLSSign(){
+    BN priv = BN("0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef", 16);
+    BN priv_err = BN("0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcde", 16);
+
+    std::string message = "greetings";
+    
+    CurvePoint pub(CurveType::BLSG1);
+    safeheron::curve::bls12_381::blsGetPublicKey(CurveType::BLSG1,pub,priv);
+
+    CurvePoint sig(CurveType::BLSG2);
+    safeheron::curve::bls12_381::blsSign(CurveType::BLSG2,sig,priv,message.c_str(),message.size());
+    
+    bool ret = safeheron::curve::bls12_381::blsVerify(CurveType::BLSG1,CurveType::BLSG2,sig,pub,message.c_str(),message.size());
+    //std::cout << "G1* G2 Verify: " << ret << std::endl;
+    EXPECT_TRUE(ret);   
+    CurvePoint pub1(CurveType::BLSG2);
+    safeheron::curve::bls12_381::blsGetPublicKey(CurveType::BLSG2,pub1,priv);
+
+    CurvePoint sig1(CurveType::BLSG1);
+    safeheron::curve::bls12_381::blsSign(CurveType::BLSG1,sig1,priv,message.c_str(),message.size());
+    
+    bool ret1 = safeheron::curve::bls12_381::blsVerify(CurveType::BLSG2,CurveType::BLSG1,sig1,pub1,message.c_str(),message.size());
+    //std::cout << "G2* G1 Verify: " << ret1 << std::endl;
+    EXPECT_TRUE(ret1);   
+}
+
 TEST(CurvePoint, BLS)
 {
     testBLS(CurveType::BLSG1);
     testBLS(CurveType::BLSG2);
+    testBLSSign();
 }
 
 int main(int argc, char **argv) {
     ::testing::InitGoogleTest(&argc, argv);
-    safeheron::curve::CurveInit();
     int ret = RUN_ALL_TESTS();
     google::protobuf::ShutdownProtobufLibrary();
     return ret;

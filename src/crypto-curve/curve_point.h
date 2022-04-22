@@ -36,11 +36,6 @@ enum class CurveType: uint32_t {
 };
 
 
-inline void CurveInit()
-{
-	mcl_Init();
-}
-
 //class 
 /**
  * Curve Point
@@ -125,7 +120,7 @@ public:
      */
     std::string Inspect() const;
 
-    void RandomInit(const void *buf, size_t bufSize);
+    void HashAndMapToG(const void *buf, size_t bufSize);
 
     /********************** encode, decode and validate  ******************************/
     // Check if the curve point is valid
@@ -287,6 +282,11 @@ public:
 
     // Get coordinate x of the point
     safeheron::bignum::BN y() const;
+
+    // Get Bls Point
+    BLS_G1 getBLSG1() const;
+    BLS_G2 getBLSG2() const;
+    std::string SerializeToHexStr() const;
 
 
     /***************************  serialization and deserialization ************************/

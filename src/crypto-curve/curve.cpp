@@ -56,6 +56,7 @@ const static Curve P256(
                 safeheron::bignum::BN("4fe342e2fe1a7f9b8ee7eb4a7c0f9e162bce33576b315ececbb6406837bf51f5", 16),
                 CurveType::P256));
 
+
 /**
  * EC_GROUP for Secp256k1
  * 
@@ -106,6 +107,36 @@ const Curve *GetCurveParam(CurveType c_type) {
             return &P256;
         case CurveType::ED25519:
             return &Ed25519;
+        case CurveType::BLSG1:
+        {
+            const static Curve C_BLSG1(
+                    safeheron::bignum::BN("0", 16),
+                    safeheron::bignum::BN("0", 16),
+                    safeheron::bignum::BN("0", 16),
+                    safeheron::bignum::BN("0", 16), // undefined 'c' for Secp256r1(also named P256)
+                    safeheron::bignum::BN("0", 16), // undefined 'd' for Secp256r1(also named P256)
+                    safeheron::bignum::BN("0", 16),
+                    CurvePoint(
+                        safeheron::bignum::BN("17f1d3a73197d7942695638c4fa9ac0fc3688c4f9774b905a14e3a3f171bac586c55e83ff97a1aeffb3af00adb22c6bb", 16),
+                        safeheron::bignum::BN("8b3f481e3aaa0f1a09e30ed741d8ae4fcf5e095d5d00af600db18cb2c04b3edd03cc744a2888ae40caa232946c5e7e1", 16),
+                        CurveType::BLSG1));
+            return &C_BLSG1;
+        }
+        case CurveType::BLSG2:
+        {
+            const static Curve C_BLSG2(
+                    safeheron::bignum::BN("0", 16),
+                    safeheron::bignum::BN("0", 16),
+                    safeheron::bignum::BN("0", 16),
+                    safeheron::bignum::BN("0", 16), // undefined 'c' for Secp256r1(also named P256)
+                    safeheron::bignum::BN("0", 16), // undefined 'd' for Secp256r1(also named P256)
+                    safeheron::bignum::BN("0", 16),
+                    CurvePoint(
+                        safeheron::bignum::BN("b8bd21c1c85680d4efbb05a82603ac0b77d1e37a640b51b4023b40fad47ae4c65110c52d27050826910a8ff0b2a24a027e2b045d057dace5575d941312f14c3349507fdcbb61dab51ab62099d0d06b59654f2788a0d3ac7d609f7152602be013", 16),
+                        safeheron::bignum::BN("0128b808865493e189a2ac3bccc93a922cd16051699a426da7d3bd8caa9bfdad1a352edac6cdc98c116e7d7227d5e50cbe795ff05f07a9aaa11dec5c270d373fab992e57ab927426af63a7857e283ecb998bc22bb0d2ac32cc34a72ea0c40606", 16),
+                        CurveType::BLSG2));
+            return &C_BLSG2;
+        }
         default:
             return nullptr;
     }

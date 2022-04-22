@@ -30,6 +30,7 @@ add_library(${CMAKE_PROJECT_NAME} SHARED
         crypto-curve/ecdsa.cpp
         crypto-curve/eddsa.cpp
         crypto-curve/mcl_wrapper.cpp
+        crypto-curve/bls12381.cpp
         ${ed25519-donna_SOURCES}
 )
 

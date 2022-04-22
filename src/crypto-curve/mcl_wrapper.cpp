@@ -2,6 +2,8 @@
 #include <iostream>
 using namespace std;
 
+// Just for mcl init.
+const static MclInit g_MCL;
 
 bool mcl_BNToFp(mcl::bls12::Fp & f,const safeheron::bignum::BN &bn){
     //if(bn.BitLength() > mcl::bls12::MCL_MAX_FP_BIT_SIZE
@@ -24,11 +26,11 @@ bool mcl_Init(){
     return true;
 }
 ///////////////////////////////////////////////////////////////////
-bool mcl_RandomInitG1(BLS_G1& g1,const void *buf, size_t bufSize){
+bool mcl_hashAndMapToG1(BLS_G1& g1,const void *buf, size_t bufSize){
     mcl::bls12::hashAndMapToG1(g1, buf,bufSize);
     return true;
 }
-bool mcl_RandomInitG2(BLS_G2& g2,const void *buf, size_t bufSize){
+bool mcl_hashAndMapToG2(BLS_G2& g2,const void *buf, size_t bufSize){
     mcl::bls12::hashAndMapToG2(g2, buf,bufSize);
     return true;
 }
@@ -84,6 +86,20 @@ bool mcl_G2Mul(BLS_G2& g2,const BLS_G2& p,const safeheron::bignum::BN &bn){
     mcl::bls12::G2::mul(g2,p,q);
     return true;
 }
+bool mcl_G1MulCT(BLS_G1& g1,const BLS_G1& p,const safeheron::bignum::BN &bn){
+    //TODO... BN maybe big then fr
+    mcl::bls12::Fp q;
+    mcl_BNToFp(q,bn);
+    mcl::bls12::G1::mulCT(g1,p,q);
+    return true;
+}
+bool mcl_G2MulCT(BLS_G2& g2,const BLS_G2& p,const safeheron::bignum::BN &bn){
+    //TODO... BN maybe big then fr
+    mcl::bls12::Fp q;
+    mcl_BNToFp(q,bn);
+    mcl::bls12::G2::mulCT(g2,p,q);
+    return true;
+}
 
 bool mcl_G1Valid(const safeheron::bignum::BN &x,const safeheron::bignum::BN &y)
 {
@@ -135,3 +151,35 @@ bool mcl_Pairing(BLS_E& f, const BLS_G1& P, const BLS_G2& Q)
     mcl::bls12::pairing(f,P,Q);
     return true;
 }
+//e(g,sig) == e(pub,hmsg);
+// ===> finalExp(ml(-g,sig) * ml(pub,hmsg)) == 1
+bool mcl_VerifyG1G2(const BLS_G1 &g,const BLS_G2 &sig, const BLS_G1 &pub, const BLS_G2 &hmsg)
+{
+    BLS_E e;
+	BLS_G1 v1[2];
+    mcl::bls12::G1::neg(v1[0],g);
+    v1[1] = pub;
+	BLS_G2 v2[2] = { sig, hmsg };
+	mcl::bls12::millerLoopVec(e, v1, v2, 2);
+	mcl::bls12::finalExp(e, e);
+	return e.isOne();
+}
+bool mcl_VerifyG2G1(const BLS_G2 &g,const BLS_G1 &sig, const BLS_G2 &pub,const BLS_G1 &hmsg){
+
+    BLS_E e;
+	BLS_G2 v1[2];
+    mcl::bls12::G2::neg(v1[0],g);
+    v1[1] = pub;
+	BLS_G1 v2[2] = { sig, hmsg };
+	mcl::bls12::millerLoopVec(e, v2, v1, 2);
+	mcl::bls12::finalExp(e, e);
+	return e.isOne();
+}
+
+std::string mcl_SerializeToHexStr(BLS_G1 P){
+    return P.serializeToHexStr();
+}
+std::string mcl_SerializeToHexStr(BLS_G2 P){
+    return P.serializeToHexStr();
+}
+

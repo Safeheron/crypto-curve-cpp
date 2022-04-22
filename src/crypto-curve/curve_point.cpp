@@ -257,13 +257,13 @@ CurvePoint::~CurvePoint() {
     Reset();
 }
 
-void CurvePoint::RandomInit(const void *buf, size_t bufSize){
+void CurvePoint::HashAndMapToG(const void *buf, size_t bufSize){
     uint category = get_category(curve_type_);
     if(category ==  2){
-        mcl_RandomInitG1(bls_g1_,buf,bufSize);
+        mcl_hashAndMapToG1(bls_g1_,buf,bufSize);
     }
     if(category ==  3){
-        mcl_RandomInitG2(bls_g2_,buf,bufSize);
+        mcl_hashAndMapToG2(bls_g2_,buf,bufSize);
     }
 }
 
@@ -637,12 +637,12 @@ CurvePoint CurvePoint::operator*(const safeheron::bignum::BN &bn) const {
         }
         case 2:
         {
-            mcl_G1Mul(res.bls_g1_,bls_g1_,bn);
+            mcl_G1MulCT(res.bls_g1_,bls_g1_,bn);
             break;
         }
         case 3:
         {
-            mcl_G2Mul(res.bls_g2_,bls_g2_,bn);
+            mcl_G2MulCT(res.bls_g2_,bls_g2_,bn);
             break;
         }
         default:
@@ -907,13 +907,29 @@ safeheron::bignum::BN CurvePoint::y() const {
             BN y;
             mcl_GetG2Y(y,bls_g2_);
             return y;
-
         }
         default:
             return safeheron::bignum::BN::MINUS_ONE;
     }
 }
 
+BLS_G1 CurvePoint::getBLSG1() const {
+    return bls_g1_;
+}
+BLS_G2 CurvePoint::getBLSG2() const{
+    return bls_g2_;
+}
+// For test:
+std::string CurvePoint::SerializeToHexStr() const{
+    switch (curve_type_) {
+        case CurveType::BLSG1:
+            return mcl_SerializeToHexStr(bls_g1_);
+        case CurveType::BLSG2:
+            return mcl_SerializeToHexStr(bls_g2_);
+        default:
+            return "";
+    }
+}
 bool CurvePoint::ToProtoObject(safeheron::proto::CurvePoint &point) const {
     if(curve_type_ == CurveType::INVALID_CURVE) return false;
     string str;
