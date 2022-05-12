@@ -2,20 +2,22 @@ find_package(GTest REQUIRED)
 find_package(PkgConfig REQUIRED)
 pkg_search_module(PROTOBUF REQUIRED protobuf)  # this looks for opencv.pc file
 
-set(TEST_TARGET curve-point-test)
-
-add_executable(${TEST_TARGET}
-        curve-point-test.cpp
-        )
-
-target_include_directories(${TEST_TARGET} PRIVATE
+include_directories(
         ${GTEST_INCLUDE_DIRS}
         "../src"
         )
 
-target_link_libraries(${TEST_TARGET}
-        ${CMAKE_PROJECT_NAME}
-        ${GTEST_BOTH_LIBRARIES}
-        pthread )
+option(ENABLE_ASSEMBLE "Enable assemble" OFF)
+if (NOT ${ENABLE_ASSEMBLE})
+        link_libraries(CryptoCurve
+                ${GTEST_BOTH_LIBRARIES}
+                pthread )
+else()
+        link_libraries(${CMAKE_PROJECT_NAME}
+                ${GTEST_BOTH_LIBRARIES}
+                pthread )
+endif()
 
-add_test(NAME ${TEST_TARGET} COMMAND ${TEST_TARGET})
+
+add_executable(curve-point-test curve-point-test.cpp)
+add_test(NAME curve-point-test COMMAND curve-point-test)
