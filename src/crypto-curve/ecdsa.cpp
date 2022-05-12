@@ -103,7 +103,7 @@ void Sign(const CurveType c_type, const BN &priv,
 bool Verify(const CurveType c_type, const CurvePoint &pub,
             const uint8_t *sig, const uint8_t *digest)
 {
-    assert(sig && der);
+    assert(sig && digest);
     if(( c_type != CurveType::SECP256K1 ) && (c_type != CurveType::P256 )){
         throw LocatedException(__FILE__, __LINE__, __FUNCTION__, -1);
     }

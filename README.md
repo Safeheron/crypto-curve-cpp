@@ -28,7 +28,8 @@ cd crypto-curve-cpp
 git submodule update --init --recursive 
 mkdir build && cd build
 # Run "cmake .. -DOPENSSL_ROOT_DIR=Your-Root-Directory-of-OPENSSL" instead of the command below on Mac OS.
-cmake ..
+# Turn on the switcher to enable tests; by default, turn off it if you don't wanna to build the test cases.
+cmake .. -DENABLE_TESTS=ON
 # Add the path to the LD_LIBRARY_PATH environment variable on Mac OS; Ignore it on Linux
 export LIBRARY_PATH=$LIBRARY_PATH:/usr/local/lib/
 make
@@ -38,6 +39,15 @@ sudo make install
 
 More platforms such as Windows would be supported soon.
 
+# Currently Supported Elliptic Curves
+
+|Curve| 	low level library                                             |	curve description|
+|---|----------------------------------------------------------------|---|
+|Secp256k1	| [OpenSSL](https://github.com/openssl/openssl)	                 |bitcoin wiki|
+|P-256	| [OpenSSL](https://github.com/openssl/openssl)	                                                       |NIST.FIPS.186.4|
+|Ed25519	| [ed25519-donna](https://github.com/floodyberry/ed25519-donna)	 |[Ed25519: high-speed high-security signatures](https://ed25519.cr.yp.to)/
+
+Note: Curve25519 and BLS12-381 will be supported soon.
 
 # To start using crypto-curve-cpp
 

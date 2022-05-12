@@ -21,7 +21,7 @@ file(GLOB ed25519-donna_SOURCES
 )
 
 message("CMAKE_PROJECT_NAME= ${CMAKE_PROJECT_NAME}")
-add_library(${CMAKE_PROJECT_NAME} SHARED
+target_sources(${CMAKE_PROJECT_NAME} PRIVATE
         crypto-curve/ed25519_ex.c
         crypto-curve/curve.cpp
         crypto-curve/curve_point.cpp

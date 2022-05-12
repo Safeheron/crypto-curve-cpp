@@ -262,7 +262,7 @@ int sign_digest(const ec_group_st* grp, const uint8_t *priv_key, const uint8_t *
     }
 
     if ((ret = BN_bn2bin(sig_r, sig)) <= 0 ||
-        (ret = BN_bn2bin(sig_s, sig + 32))) {
+        (ret = BN_bn2bin(sig_s, sig + 32)) <= 0) {
         ret = 2;
         goto err;
     }
@@ -333,7 +333,9 @@ int verify_digest(const ec_group_st* grp, const uint8_t *pub_key, const uint8_t 
         ret = 1;
         goto err;
     }
-    if ((ret = EC_KEY_set_public_key(ec_key, pub)) != 1) {
+    if (!(ec_key = EC_KEY_new()) ||
+        (ret = EC_KEY_set_group(ec_key, grp)) != 1 ||
+        (ret = EC_KEY_set_public_key(ec_key, pub)) != 1) {
         ret = 1;
         goto err;
     }
