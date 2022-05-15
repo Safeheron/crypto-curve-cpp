@@ -318,11 +318,11 @@ int verify_digest(const ec_group_st* grp, const uint8_t *pub_key, const uint8_t 
         ret = 1;
         goto err;
     }
+
+    // bn_x and bn_y will be freed where BN_CTX_end() is called.
     BN_CTX_start(ctx);
     if (!(bn_x = BN_CTX_get(ctx)) ||
-        !(bn_y = BN_CTX_get(ctx)) ||
-        !(bn_r = BN_CTX_get(ctx)) ||
-        !(bn_s = BN_CTX_get(ctx))) {
+        !(bn_y = BN_CTX_get(ctx))) {
         ret = 1;
         goto err;
     }
@@ -336,6 +336,13 @@ int verify_digest(const ec_group_st* grp, const uint8_t *pub_key, const uint8_t 
     if (!(ec_key = EC_KEY_new()) ||
         (ret = EC_KEY_set_group(ec_key, grp)) != 1 ||
         (ret = EC_KEY_set_public_key(ec_key, pub)) != 1) {
+        ret = 1;
+        goto err;
+    }
+
+    // bn_r and bn_s will be freed where ECDSA_SIG_free() is called.
+    if (!(bn_r = BN_new()) ||
+        !(bn_s = BN_new())) {
         ret = 1;
         goto err;
     }
