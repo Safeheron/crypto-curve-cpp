@@ -9,6 +9,7 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O2 -Wall -Wextra -Wno-unused-parameter 
 cmake_policy(SET CMP0076 NEW)
 cmake_policy(SET CMP0079 NEW)
 add_library(${CMAKE_PROJECT_NAME} SHARED "")
+
 add_subdirectory(src)
 
 option(ENABLE_TESTS "Enable tests" OFF)
