@@ -10,13 +10,12 @@ using safeheron::exception::LocatedException;
 
 namespace safeheron{
 namespace curve {
-namespace ecdsa {
+namespace eddsa {
 
 std::string Sign(const CurveType c_type,
                  const safeheron::bignum::BN &priv,
                  const CurvePoint &pub,
-                 const uint8_t *msg, size_t len,
-                 uint8_t *sig){
+                 const uint8_t *msg, size_t len){
     if( c_type != CurveType::ED25519){
         throw LocatedException(__FILE__, __LINE__, __FUNCTION__, -1);
     }
