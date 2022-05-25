@@ -21,9 +21,9 @@ namespace ecdsa {
 /**
  * Sign a message.
  * @param[in] c_type type of elliptic curve.
- * @param priv private key.
- * @param digest32 digest of message.
- * @param sig64 signature.
+ * @param[in] priv private key.
+ * @param[in] digest32 digest of message.
+ * @param[out] sig64 signature.
  * @note Note that:
  *  - The signature is encode in 64 bytes;
  *  - The digest is store in 32 bytes;
@@ -33,9 +33,9 @@ void Sign(safeheron::curve::CurveType c_type, const safeheron::bignum::BN &priv,
 /**
  * Verify the signature.
  * @param[in] c_type type of elliptic curve.
- * @param pub public key
- * @param sig64 signature.
- * @param digest32 digest of message.
+ * @param[in] pub public key
+ * @param[in] sig64 signature.
+ * @param[in] digest32 digest of message.
  * @note Note that:
  *  - The signature is encode in 64 bytes;
  *  - The digest is store in 32 bytes;
@@ -45,18 +45,19 @@ bool Verify(CurveType cType, const CurvePoint &pub, const uint8_t *sig64, const 
 
 /**
  * Convert the format of signature from 64 bytes to DER
- * @param sig64 signature encoded in 64 bytes.
- * @param der signature encoded in DER
+ * @param[in] sig64 signature encoded in 64 bytes.
+ * @param[out] der signature encoded in DER
  * @return true on success, false otherwise.
  */
 bool Sig64ToDer(const uint8_t *sig64, uint8_t *der);
 
 /**
  * Convert the format of signature from DER to 64 bytes.
- * @param der signature encoded in DER
- * @param sig64 signature encoded in 64 bytes.
+ * @param[in] der signature encoded in DER
+ * @param[in] der_len
+ * @param[out] sig64
  * @return true on success, false otherwise.
- */
+  */
 bool DerToSig64(const uint8_t *der, size_t der_len, uint8_t sig64[64]);
 
 /**

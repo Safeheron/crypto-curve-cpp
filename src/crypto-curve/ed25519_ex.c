@@ -27,7 +27,7 @@ ed25519_publickey_pure (const ed25519_secret_key sk, ed25519_public_key pk) {
 
 
 int
-ed25519_publickey_neg (ed25519_public_key res, ed25519_public_key pk){
+ed25519_publickey_neg (ed25519_public_key res, const ed25519_public_key pk){
     ge25519 ALIGN(16) P;
 
     if (!ge25519_unpack_negative_vartime(&P, pk)) {

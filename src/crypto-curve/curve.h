@@ -59,14 +59,14 @@ public:
 
 /**
  * Return a pointer to the group information.
- * @param c_type
+ * @param[in] c_type
  * @return A pointer to a struct ec_group_st.
  */
 const ec_group_st *GetCurveGroup(CurveType c_type);
 
 /**
  * Get a Curve with the specified type.
- * @param c_type
+ * @param[in] c_type
  * @return A pointer to the Curve.
  */
 const Curve *GetCurveParam(CurveType c_type);

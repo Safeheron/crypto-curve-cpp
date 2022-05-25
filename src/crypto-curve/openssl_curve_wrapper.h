@@ -20,10 +20,10 @@ namespace _openssl_curve_wrapper
 {
     /**
      * Encode the elliptic point to bytes.
-     * @param grp the pointer to the elliptic curve group information.
-     * @param pub elliptic point
-     * @param pub_key compressed public key bytes or full public key bytes.
-     * @param compress encode in compressed format if "compress" flag is set true.
+     * @param[in] grp the pointer to the elliptic curve group information.
+     * @param[in] pub elliptic point
+     * @param[out] pub_key compressed public key bytes or full public key bytes.
+     * @param[in] compress encode in compressed format if "compress" flag is set true.
      * @return 0 on success.
      */
     int encode_ec_point(const ec_group_st* grp, const ec_point_st *pub, uint8_t *pub_key, bool compress);

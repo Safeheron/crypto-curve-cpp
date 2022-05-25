@@ -24,12 +24,12 @@ namespace eddsa {
 
 /**
  * Sign a message.
- * @param c_type type of elliptic curve.
- * @param priv private key
- * @param pub public key
- * @param msg message
- * @param len length of message
- * @return
+ * @param[in] c_type type of elliptic curve.
+ * @param[in] priv private key
+ * @param[in] pub public key
+ * @param[in] msg message
+ * @param[in] len length of message
+ * @return signature in bytes.
  */
 std::string Sign(const CurveType c_type,
                  const safeheron::bignum::BN &priv,
@@ -38,12 +38,12 @@ std::string Sign(const CurveType c_type,
 
 /**
  * Verify a signature.
- * @param c_type type of elliptic curve.
- * @param pub public key
- * @param sig signature
- * @param msg message
- * @param len length of message
- * @return
+ * @param[in] c_type type of elliptic curve.
+ * @param[in] pub public key
+ * @param[in] sig signature
+ * @param[in] msg message
+ * @param[in] len length of message
+ * @return true on success, false on error.
  */
 bool Verify(const CurveType c_type,
             const CurvePoint &pub,
