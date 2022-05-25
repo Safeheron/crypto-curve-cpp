@@ -1,6 +1,11 @@
-//
-// Created by 何剑虹 on 2021/5/18.
-//
+/*
+ * Copyright 2020-2022 Safeheron Inc. All Rights Reserved.
+ *
+ * Licensed under the Apache License 2.0 (the "License").  You may not use
+ * this file except in compliance with the License.  You can obtain a copy
+ * in the file LICENSE in the source distribution or at
+ * https://www.safeheron.com/opensource/license.html
+ */
 
 #include "ecdsa.h"
 #include "crypto-bn/rand.h"
@@ -22,9 +27,9 @@ namespace safeheron{
 namespace curve {
 namespace ecdsa {
 
-bool RecoverPublicKey(safeheron::curve::CurvePoint &pub, safeheron::curve::CurveType c_type, const safeheron::bignum::BN &m, const safeheron::bignum::BN &r, const safeheron::bignum::BN &s, uint j) {
+bool RecoverPublicKey(safeheron::curve::CurvePoint &pub, safeheron::curve::CurveType c_type, const safeheron::bignum::BN &h, const safeheron::bignum::BN &r, const safeheron::bignum::BN &s, uint j) {
     if(( c_type != CurveType::SECP256K1 ) && (c_type != CurveType::P256 )){
-        throw LocatedException(__FILE__, __LINE__, __FUNCTION__, -1);
+        throw LocatedException(__FILE__, __LINE__, __FUNCTION__, -1, "( c_type != CurveType::SECP256K1 ) && (c_type != CurveType::P256 )");
     }
 
     if(j > 3) return false;
@@ -45,7 +50,7 @@ bool RecoverPublicKey(safeheron::curve::CurvePoint &pub, safeheron::curve::Curve
     bool ok = R.PointFromX(x, is_y_odd, c_type);
     if (!ok) return false;
     BN r_inv = r.InvM(curv->n);
-    BN n_m = curv->n - m % curv->n;
+    BN n_m = curv->n - h % curv->n;
     BN u1 = (n_m * r_inv) % curv->n;
     BN u2 = (s * r_inv) % curv->n;
 
@@ -53,59 +58,57 @@ bool RecoverPublicKey(safeheron::curve::CurvePoint &pub, safeheron::curve::Curve
     return true;
 }
 
-bool RecoverPublicKey(safeheron::curve::CurvePoint &pub, const CurveType c_type, const uint8_t *sig64, uint sig_len, const uint8_t *digest, uint digest_len, uint v){
-    BN m = BN::FromBytesBE(digest, digest_len);
+bool RecoverPublicKey(safeheron::curve::CurvePoint &pub, const CurveType c_type, const uint8_t *sig64, uint sig_len, const uint8_t *digest32, uint digest32_len, uint v){
+    BN m = BN::FromBytesBE(digest32, digest32_len);
     BN r = BN::FromBytesBE(sig64, 32);
     BN s = BN::FromBytesBE(sig64 + 32, 32);
     return RecoverPublicKey(pub, c_type, m , r , s, v);
 }
 
-bool VerifyPublicKey(const safeheron::curve::CurvePoint &expected_pub, safeheron::curve::CurveType c_type, const safeheron::bignum::BN &m, const safeheron::bignum::BN &r, const safeheron::bignum::BN &s, uint v){
+bool VerifyPublicKey(const safeheron::curve::CurvePoint &expected_pub, safeheron::curve::CurveType c_type, const safeheron::bignum::BN &h, const safeheron::bignum::BN &r, const safeheron::bignum::BN &s, uint v){
     if(( c_type != CurveType::SECP256K1 ) && (c_type != CurveType::P256 )){
-        throw LocatedException(__FILE__, __LINE__, __FUNCTION__, -1);
+        throw LocatedException(__FILE__, __LINE__, __FUNCTION__, -1, "( c_type != CurveType::SECP256K1 ) && (c_type != CurveType::P256 )");
     }
     safeheron::curve::CurvePoint pub;
-    bool ok = RecoverPublicKey(pub, c_type, m, r, s, v);
+    bool ok = RecoverPublicKey(pub, c_type, h, r, s, v);
     if (!ok) return false;
     return pub == expected_pub;
 }
 
 bool VerifyPublicKey(const CurvePoint &pub, const CurveType c_type,
                      const uint8_t *sig64, uint sig_len,
-                     const uint8_t *digest, uint digest_len,
+                     const uint8_t *digest32, uint digest32_len,
                      uint v) {
     if(( c_type != CurveType::SECP256K1 ) && (c_type != CurveType::P256 )){
-        throw LocatedException(__FILE__, __LINE__, __FUNCTION__, -1);
+        throw LocatedException(__FILE__, __LINE__, __FUNCTION__, -1, "( c_type != CurveType::SECP256K1 ) && (c_type != CurveType::P256 )");
     }
-    BN m = BN::FromBytesBE(digest, digest_len);
+    BN m = BN::FromBytesBE(digest32, digest32_len);
     BN r = BN::FromBytesBE(sig64, 32);
     BN s = BN::FromBytesBE(sig64 + 32, 32);
     return VerifyPublicKey(pub, c_type, m, r, s, v);
 }
 
-void Sign(const CurveType c_type, const BN &priv,
-          const uint8_t *digest, uint8_t *sig, uint8_t *pv,
-          int (*is_canonical)(uint8_t v, uint8_t sig[64])){
+void Sign(const CurveType c_type, const BN &priv, const uint8_t *digest32, uint8_t *sig64){
     if(( c_type != CurveType::SECP256K1 ) && (c_type != CurveType::P256 )){
-        throw LocatedException(__FILE__, __LINE__, __FUNCTION__, -1);
+        throw LocatedException(__FILE__, __LINE__, __FUNCTION__, -1, "( c_type != CurveType::SECP256K1 ) && (c_type != CurveType::P256 )");
     }
     unsigned char sk[32];
     const curve::Curve *curv = curve::GetCurveParam(c_type);
 
     priv.ToBytes32BE((uint8_t *)sk);
 
-    int ret = safeheron::_openssl_curve_wrapper::sign_digest(curv->grp, sk, digest, sig);
+    int ret = safeheron::_openssl_curve_wrapper::sign_digest(curv->grp, sk, digest32, sig64);
     if (0 != ret) {
-        throw OpensslException(__FILE__, __LINE__, __FUNCTION__, ret);
+        throw OpensslException(__FILE__, __LINE__, __FUNCTION__, ret, "(ret = safeheron::_openssl_curve_wrapper::sign_digest(curv->grp, sk, digest32, sig)) != 0");
     }
 }
 
 bool Verify(const CurveType c_type, const CurvePoint &pub,
-            const uint8_t *sig, const uint8_t *digest)
+            const uint8_t *sig, const uint8_t *digest32)
 {
-    assert(sig && digest);
+    assert(sig && digest32);
     if(( c_type != CurveType::SECP256K1 ) && (c_type != CurveType::P256 )){
-        throw LocatedException(__FILE__, __LINE__, __FUNCTION__, -1);
+        throw LocatedException(__FILE__, __LINE__, __FUNCTION__, -1, "( c_type != CurveType::SECP256K1 ) && (c_type != CurveType::P256 )");
     }
 
     if( c_type != pub.GetCurveType() ) return false;
@@ -113,10 +116,10 @@ bool Verify(const CurveType c_type, const CurvePoint &pub,
     unsigned char pub_key[65];
     pub.EncodeFull(pub_key);
 
-    return 0 == safeheron::_openssl_curve_wrapper::verify_digest(pub.GetEcdsaCurveGrp(), pub_key, sig, digest);
+    return 0 == safeheron::_openssl_curve_wrapper::verify_digest(pub.GetEcdsaCurveGrp(), pub_key, sig, digest32);
 }
 
-bool SigToDer(const uint8_t *sig, uint8_t *der)
+bool Sig64ToDer(const uint8_t *sig64, uint8_t *der)
 {
     assert(sig && der);
     bool ret = 0;
@@ -126,7 +129,7 @@ bool SigToDer(const uint8_t *sig, uint8_t *der)
     ECDSA_SIG* ecdsa_sig = nullptr;
     unsigned char* p = nullptr;
 
-    if (!sig || !der) {
+    if (!sig64 || !der) {
         return false;
     }
 
@@ -136,8 +139,8 @@ bool SigToDer(const uint8_t *sig, uint8_t *der)
         goto err;
     }
 
-    if (!BN_bin2bn(sig, 32, bn_r) ||
-        !BN_bin2bn(sig + 32, 32, bn_s)) {
+    if (!BN_bin2bn(sig64, 32, bn_r) ||
+        !BN_bin2bn(sig64 + 32, 32, bn_s)) {
         ret = false;
         goto err;
     }
@@ -172,7 +175,7 @@ bool SigToDer(const uint8_t *sig, uint8_t *der)
     return ret;
 }
 
-bool SigFromDer(const uint8_t *der, size_t der_len, uint8_t sig[64])
+bool DerToSig64(const uint8_t *der, size_t der_len, uint8_t sig64[64])
 {
     bool ret = 0;
     int r_len = 0;
@@ -210,8 +213,8 @@ bool SigFromDer(const uint8_t *der, size_t der_len, uint8_t sig[64])
         goto err;
     }
 
-    memcpy(sig + (32-r_len), r, r_len);
-    memcpy(sig + 32 + (32-s_len), s, s_len);
+    memcpy(sig64 + (32-r_len), r, r_len);
+    memcpy(sig64 + 32 + (32-s_len), s, s_len);
 
     ret = true;
 

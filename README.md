@@ -14,6 +14,7 @@ The library comes with serialize/deserialize support to be used in higher level 
 
 - [OpenSSL](https://github.com/openssl/openssl#documentation). See the [OpenSSL Installation Instructions](./OpenSSL-Installation.md)
 - [Protocol Buffers](https://github.com/protocolbuffers/protobuf.git). See the [Protocol Buffers Installation Instructions](./Protocol-Buffers-Installation.md)
+- [GoogleTest](https://github.com/google/googletest). **You need it to compile and run test cases**. See the [GoogleTest Installation Instructions](./GoogleTest-Installation.md)
 - [crypto-bn-cpp](https://github.com/safeheron/crypto-bn-cpp.git). See the [crypto-bn-cpp Installation Instructions](https://github.com/safeheron/crypto-bn-cpp/blob/main/README.md#build-and-install)
 - [crypto-hash-cpp](https://github.com/safeheron/crypto-hash-cpp.git). See the [crypto-hash-cpp Installation Instructions](https://github.com/safeheron/crypto-hash-cpp/blob/main/README.md#build-and-install)
 - [crypto-encode-cpp](https://github.com/safeheron/crypto-encode-cpp.git). See the [crypto-encode-cpp Installation Instructions](https://github.com/safeheron/crypto-encode-cpp/blob/main/README.md#build-and-install)
@@ -47,7 +48,7 @@ More platforms such as Windows would be supported soon.
 |P-256	| [OpenSSL](https://github.com/openssl/openssl)	                                                       |NIST.FIPS.186.4|
 |Ed25519	| [ed25519-donna](https://github.com/floodyberry/ed25519-donna)	 |[Ed25519: high-speed high-security signatures](https://ed25519.cr.yp.to)/
 
-Note: Curve25519 and BLS12-381 will be supported soon.
+Note: Curve25519, SM2 and BLS12-381 will be supported soon.
 
 # To start using crypto-curve-cpp
 
@@ -200,8 +201,8 @@ int main(){
 ## Namespace - safeheron::curve::ecdsa
 >- Sign(...) - Sign in ecdsa.
 >- Verify(...) - Verify signature in ecdsa.
->- SigToDer(...) - Convert signature from 64 bytes into der format.
->- SigFromDer(...) - Convert signature from der format into 64 bytes.
+>- Sig64ToDer(...) - Convert signature from 64 bytes into der format.
+>- DerToSig64(...) - Convert signature from der format into 64 bytes.
 >- RecoverPublicKey(...) - Recover public key from signature.
 >- VerifyPublicKey(...) - Verify Public key.
  

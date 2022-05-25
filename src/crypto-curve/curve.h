@@ -1,6 +1,11 @@
-//
-// Created by 何剑虹 on 2021/6/17.
-//
+/*
+ * Copyright 2020-2022 Safeheron Inc. All Rights Reserved.
+ *
+ * Licensed under the Apache License 2.0 (the "License").  You may not use
+ * this file except in compliance with the License.  You can obtain a copy
+ * in the file LICENSE in the source distribution or at
+ * https://www.safeheron.com/opensource/license.html
+ */
 
 #ifndef SAFEHERON_CURVE_H
 #define SAFEHERON_CURVE_H
@@ -13,17 +18,31 @@
 namespace safeheron{
 namespace curve {
 
+/**
+ * A Curve class
+ */
 class Curve {
 public:
-    const safeheron::bignum::BN p;
-    const safeheron::bignum::BN a;
-    const safeheron::bignum::BN b;
-    const safeheron::bignum::BN c;
-    const safeheron::bignum::BN d;
-    const safeheron::bignum::BN n;
-    const CurvePoint g;
-    const ec_group_st* grp;
+    const safeheron::bignum::BN p; /**< A prime which indicates the finite fields. */
+    const safeheron::bignum::BN a; /**< A parameter to define the curve. */
+    const safeheron::bignum::BN b; /**< A parameter to define the curve. */
+    const safeheron::bignum::BN c; /**< A parameter to define the curve. */
+    const safeheron::bignum::BN d; /**< A parameter to define the curve. */
+    const safeheron::bignum::BN n; /**< Order of the group on the curve */
+    const CurvePoint g; /**< Base point of the group on the curve */
+    const ec_group_st* grp; /**< A pointer to the struct indicating the group on the curve */
 
+    /**
+     * Constructor.
+     *
+     * @param _p A prime which indicates the finite fields.
+     * @param _a A parameter to define the curve.
+     * @param _b A parameter to define the curve.
+     * @param _c A parameter to define the curve.
+     * @param _d A parameter to define the curve.
+     * @param _n Order of the group on the curve
+     * @param _g Base point of the group on the curve
+     */
     Curve(safeheron::bignum::BN _p,
           safeheron::bignum::BN _a,
           safeheron::bignum::BN _b,
@@ -31,25 +50,25 @@ public:
           safeheron::bignum::BN _d,
           safeheron::bignum::BN _n,
           CurvePoint _g);
+
+    /**
+     * Destructor.
+     */
     ~Curve();
 };
 
-
 /**
- * 0, invalid
- *
- * 1 ~ 2^5-1, short curve
- * - SECP256K1 = 1,
- * - P256 = 2,
- *
- * 2^5 ~ 2^6-1, edwards curve
- * - ED25519 = 32,
- *
- * 2^6 ~ 2^6+2^5-1, montgomery curve
+ * Return a pointer to the group information.
  * @param c_type
- * @return
+ * @return A pointer to a struct ec_group_st.
  */
 const ec_group_st *GetCurveGroup(CurveType c_type);
+
+/**
+ * Get a Curve with the specified type.
+ * @param c_type
+ * @return A pointer to the Curve.
+ */
 const Curve *GetCurveParam(CurveType c_type);
 
 }

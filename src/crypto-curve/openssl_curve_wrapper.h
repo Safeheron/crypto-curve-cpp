@@ -1,5 +1,14 @@
-#ifndef _SAFEHERON_OPENSSL_CURVE_WRAPPER_H_
-#define _SAFEHERON_OPENSSL_CURVE_WRAPPER_H_
+/*
+ * Copyright 2020-2022 Safeheron Inc. All Rights Reserved.
+ *
+ * Licensed under the Apache License 2.0 (the "License").  You may not use
+ * this file except in compliance with the License.  You can obtain a copy
+ * in the file LICENSE in the source distribution or at
+ * https://www.safeheron.com/opensource/license.html
+ */
+
+#ifndef SAFEHERON_OPENSSL_CURVE_WRAPPER_H_
+#define SAFEHERON_OPENSSL_CURVE_WRAPPER_H_
 
 #include "crypto-bn/bn.h"
 
@@ -9,19 +18,42 @@ struct ec_point_st;
 namespace safeheron{
 namespace _openssl_curve_wrapper
 {
-    bool point_set_infinity(const ec_group_st* grp, ec_point_st *p);
-    bool point_is_infinity(const ec_group_st* grp, const ec_point_st *p);
-    int read_pubkey(const ec_group_st* grp, const uint8_t *pub_key, ec_point_st *pub);
-    int write_pubkey(const ec_group_st* grp, const ec_point_st *pub, uint8_t *pub_key, bool compress);
-    int point_add(const ec_group_st* grp, const ec_point_st *cp1, ec_point_st *cp2);
-    int point_multiply(const ec_group_st* grp, const bignum_st *k, const ec_point_st *p, ec_point_st *res);
-    int point_neg(const ec_group_st* grp, const ec_point_st *p, ec_point_st *res);
-    int sign_digest(const ec_group_st* grp, const uint8_t *priv_key, const uint8_t *digest, uint8_t *sig);
-    int verify_digest(const ec_group_st* grp, const uint8_t *pub_key, const uint8_t *sig, const uint8_t *digest);
-    //
-    bool validate_pubkey(const ec_group_st* grp, const ec_point_st *pub);
-    int uncompress_coords(const ec_group_st* grp, uint8_t odd, const bignum_st *x, bignum_st *y);
+    /**
+     * Encode the elliptic point to bytes.
+     * @param grp the pointer to the elliptic curve group information.
+     * @param pub elliptic point
+     * @param pub_key compressed public key bytes or full public key bytes.
+     * @param compress encode in compressed format if "compress" flag is set true.
+     * @return 0 on success.
+     */
+    int encode_ec_point(const ec_group_st* grp, const ec_point_st *pub, uint8_t *pub_key, bool compress);
+
+    /**
+     * Sign a digest.
+     * @param[in] grp the pointer to the elliptic curve group information.
+     * @param[in] priv_key  private key
+     * @param[in] digest32 digest of the message
+     * @param[out] sig64 signature
+     * @note Note that:
+     *  - The signature is encode in 64 bytes;
+     *  - The digest is store in 32 bytes;
+     * @return 0 on success.
+     */
+    int sign_digest(const ec_group_st* grp, const uint8_t *priv_key, const uint8_t *digest32, uint8_t *sig64);
+
+    /**
+     * Verify the signature.
+     * @param[in] grp the pointer to the elliptic curve group information.
+     * @param[in] pub_key public key
+     * @param[in] digest32 digest of the message
+     * @param[in] sig64 signature
+     * @note Note that:
+     *  - The signature is encode in 64 bytes;
+     *  - The digest is store in 32 bytes;
+     * @return 0 on success.
+     */
+    int verify_digest(const ec_group_st* grp, const uint8_t *pub_key, const uint8_t *digest32, const uint8_t *sig64);
 };
 };
 
-#endif //_SAFEHERON_OPENSSL_CURVE_WRAPPER_H_
+#endif //SAFEHERON_OPENSSL_CURVE_WRAPPER_H_

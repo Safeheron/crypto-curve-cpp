@@ -1,6 +1,11 @@
-//
-// Created by 何剑虹 on 2021/5/18.
-//
+/*
+ * Copyright 2020-2022 Safeheron Inc. All Rights Reserved.
+ *
+ * Licensed under the Apache License 2.0 (the "License").  You may not use
+ * this file except in compliance with the License.  You can obtain a copy
+ * in the file LICENSE in the source distribution or at
+ * https://www.safeheron.com/opensource/license.html
+ */
 
 #include "eddsa.h"
 #include "exception/safeheron_exceptions.h"
@@ -17,7 +22,7 @@ std::string Sign(const CurveType c_type,
                  const CurvePoint &pub,
                  const uint8_t *msg, size_t len){
     if( c_type != CurveType::ED25519){
-        throw LocatedException(__FILE__, __LINE__, __FUNCTION__, -1);
+        throw LocatedException(__FILE__, __LINE__, __FUNCTION__, -1, "c_type != CurveType::ED25519");
     }
 
     unsigned char sk[32];
@@ -38,7 +43,7 @@ std::string Sign(const CurveType c_type,
 bool verify(const CurveType c_type, const CurvePoint &pub,
             const uint8_t *sig, const uint8_t *msg, size_t len){
     if( c_type != CurveType::ED25519 ){
-        throw LocatedException(__FILE__, __LINE__, __FUNCTION__, -1);
+        throw LocatedException(__FILE__, __LINE__, __FUNCTION__, -1, " c_type != CurveType::ED25519 ");
     }
 
     ed25519_public_key pub32;

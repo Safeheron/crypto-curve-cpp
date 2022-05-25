@@ -1,6 +1,12 @@
-//
-// Created by 何剑虹 on 2020/10/22.
-//
+/*
+ * Copyright 2020-2022 Safeheron Inc. All Rights Reserved.
+ *
+ * Licensed under the Apache License 2.0 (the "License").  You may not use
+ * this file except in compliance with the License.  You can obtain a copy
+ * in the file LICENSE in the source distribution or at
+ * https://www.safeheron.com/opensource/license.html
+ */
+
 #include <cstring>
 #include <google/protobuf/stubs/common.h>
 #include "gtest/gtest.h"
@@ -18,8 +24,8 @@ using safeheron::curve::CurveType;
 void testRelationOperations(CurvePoint CPoint0, CurvePoint CPointEqual, CurvePoint CPointNeg, CurvePoint CPointNotEqual) {
     EXPECT_TRUE(CPoint0 == CPointEqual);
     EXPECT_FALSE(CPoint0 == CPointNotEqual);
-    EXPECT_TRUE(CPoint0.neg() == CPointNeg);
-    EXPECT_TRUE(CPointNeg.neg() == CPoint0);
+    EXPECT_TRUE(CPoint0.Neg() == CPointNeg);
+    EXPECT_TRUE(CPointNeg.Neg() == CPoint0);
     EXPECT_TRUE(CPoint0 !=  CPointNotEqual);
     EXPECT_FALSE(CPoint0 != CPointEqual);
     EXPECT_TRUE(CPoint0 != CPointNeg);
@@ -33,8 +39,8 @@ void testRelationOperations(CurvePoint CPoint0, CurvePoint CPointEqual, CurvePoi
     EXPECT_TRUE(CPoint1 == CPoint0);
     CPoint0 -= Zero;
     EXPECT_TRUE(CPoint1 == CPoint0);
-    EXPECT_TRUE(Zero.neg() == Zero);
-    EXPECT_TRUE(Zero.neg().IsInfinity());
+    EXPECT_TRUE(Zero.Neg() == Zero);
+    EXPECT_TRUE(Zero.Neg().IsInfinity());
 }
 TEST(CurvePoint, RelationOperations) {
     BN bn_x("b976f8c0cbe611898a46813f7f1862452fcef6750f0fe0f33b09f9554ebe3270", 16);
@@ -47,9 +53,6 @@ TEST(CurvePoint, RelationOperations) {
     CurvePoint CPointNotEqual(bn_x, bn_y, safeheron::curve::CurveType::SECP256K1);
     bn_x = BN("b976f8c0cbe611898a46813f7f1862452fcef6750f0fe0f33b09f9554ebe3270", 16);
     bn_y = BN("2109ba6537a9605f023d40bc5f9783136839fb33c6d3950ec9b0784c3cedbc24", 16);
-    //注释
-//    bn_x = BN("b976f8c0cbe611898a46813f7f1862452fcef6750f0fe0f33b09f9554ebe3270", 16);
-//    bn_y = BN("-def6459ac8569fa0fdc2bf43a0687cec97c604cc392c6af1364f87b2c312400b", 16);
     EXPECT_TRUE(CurvePoint::ValidatePoint(bn_x, bn_y, safeheron::curve::CurveType::SECP256K1));
     CurvePoint CPointNeg(bn_x, bn_y, safeheron::curve::CurveType::SECP256K1);
     testRelationOperations(CPoint0, CPoint0, CPointNeg, CPointNotEqual);
@@ -80,8 +83,6 @@ TEST(CurvePoint, RelationOperations) {
     CPointNotEqual = CurvePoint(bn_x, bn_y, safeheron::curve::CurveType::ED25519);
     bn_x = BN("3e5dc803660b16e2b705e325965c4af784f4b45d11744d741d0c88dad6970e94", 16);
     bn_y = BN("1f3df43b1b2a09127cc4f9dfa68a0b1f5e6f619780a668079471d5f3935ff65", 16);
-//    bn_x = BN("-523de6af479614ab27f0913253dd72749d0964472d03d970100c35944dd84fa7", 16);
-//    bn_y = BN("9f0af2b712abad5297c46c7464114c828305bfbada03f656f954822851dcc8f", 16);
     EXPECT_TRUE(CurvePoint::ValidatePoint(bn_x, bn_y, safeheron::curve::CurveType::ED25519));
     CPointNeg = CurvePoint(bn_x, bn_y, safeheron::curve::CurveType::ED25519);
     testRelationOperations(CPoint0, CPoint0, CPointNeg, CPointNotEqual);

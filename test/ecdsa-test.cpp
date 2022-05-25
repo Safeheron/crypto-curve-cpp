@@ -1,6 +1,11 @@
-//
-// Created by 何剑虹 on 2020/10/22.
-//
+/*
+ * Copyright 2020-2022 Safeheron Inc. All Rights Reserved.
+ *
+ * Licensed under the Apache License 2.0 (the "License").  You may not use
+ * this file except in compliance with the License.  You can obtain a copy
+ * in the file LICENSE in the source distribution or at
+ * https://www.safeheron.com/opensource/license.html
+ */
 #include <cstring>
 #include <google/protobuf/stubs/common.h>
 #include "gtest/gtest.h"
@@ -27,19 +32,19 @@ int test_curve_sign(CurveType type, BN &privkey, CurvePoint &pubkey, int times)
 {
     int cur_time = 0;
     int sig_len = 64;
-    const int DATA_SIZE = 32;
-    uint8_t data[DATA_SIZE] = {0};
+    const int DIGEST_SIZE = 32;
+    uint8_t digest[DIGEST_SIZE] = {0};
     uint8_t sig[64] = {0};
 
     do {
-        safeheron::rand::RandomBytes(data, DATA_SIZE);
-        printf("data: "); print_hex(data, DATA_SIZE);
+        safeheron::rand::RandomBytes(digest, DIGEST_SIZE);
+        printf("data: "); print_hex(digest, DIGEST_SIZE);
 
         memset(sig, 0, 64);
-        safeheron::curve::ecdsa::Sign(type, privkey, data, sig, nullptr, nullptr);
+        safeheron::curve::ecdsa::Sign(type, privkey, digest, sig);
         printf("sign: "); print_hex(sig, 64);
 
-        bool pass = safeheron::curve::ecdsa::Verify(type, pubkey, sig, data);
+        bool pass = safeheron::curve::ecdsa::Verify(type, pubkey, digest, sig);
         EXPECT_TRUE(pass == true);
         if (!pass) {
             printf("verify failed!\n");
@@ -65,7 +70,7 @@ TEST(curve_sign, SECP256K1)
     printf("/*******************SECP256K1 Sign/Verify*********************/\n");
     printf("Private Key: %s\n", priv_str.c_str());
     printf("Public Key: %s\n", pub.Inspect().c_str());
-    test_curve_sign(CurveType::SECP256K1, priv, pub, 10);
+    test_curve_sign(CurveType::SECP256K1, priv, pub, 1000);
     printf("/*******************SECP256K1 Sign/Verify*********************/\n");
     printf("\n\n");
 }
@@ -81,7 +86,7 @@ TEST(curve_sign, P256)
     printf("/*******************P256 Sign/Verify*********************/\n");
     printf("Private Key: %s\n", priv_str.c_str());
     printf("Public Key: %s\n", pub.Inspect().c_str());
-    test_curve_sign(CurveType::P256, priv, pub, 10);
+    test_curve_sign(CurveType::P256, priv, pub, 1000);
     printf("/*******************P256 Sign/Verify*********************/\n");
     printf("\n\n");
 }

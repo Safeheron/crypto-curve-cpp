@@ -1,9 +1,14 @@
-//
-// Created by 何剑虹 on 2021/5/18.
-//
+/*
+ * Copyright 2020-2022 Safeheron Inc. All Rights Reserved.
+ *
+ * Licensed under the Apache License 2.0 (the "License").  You may not use
+ * this file except in compliance with the License.  You can obtain a copy
+ * in the file LICENSE in the source distribution or at
+ * https://www.safeheron.com/opensource/license.html
+ */
 
-#ifndef CPP_MPC_CURVE_ECDSA_H
-#define CPP_MPC_CURVE_ECDSA_H
+#ifndef SFEHERON_CURVE_ECDSA_H
+#define SFEHERON_CURVE_ECDSA_H
 
 #include "curve.h"
 #include "crypto-bn/bn.h"
@@ -13,39 +18,113 @@ namespace safeheron{
 namespace curve {
 namespace ecdsa {
 
-void Sign(safeheron::curve::CurveType c_type, const safeheron::bignum::BN &priv,
-          const uint8_t *digest, uint8_t *sig64, uint8_t *pv,
-          int (*is_canonical)(uint8_t v, uint8_t sig[64]));
-bool Verify(CurveType cType, const CurvePoint &pub,
-            const uint8_t *sig64, const uint8_t *digest);
+/**
+ * Sign a message.
+ * @param[in] c_type type of elliptic curve.
+ * @param priv private key.
+ * @param digest32 digest of message.
+ * @param sig64 signature.
+ * @note Note that:
+ *  - The signature is encode in 64 bytes;
+ *  - The digest is store in 32 bytes;
+ */
+void Sign(safeheron::curve::CurveType c_type, const safeheron::bignum::BN &priv, const uint8_t *digest32, uint8_t *sig64);
 
-bool SigToDer(const uint8_t *sig, uint8_t *der);
-bool SigFromDer(const uint8_t *der, size_t der_len, uint8_t sig[64]);
+/**
+ * Verify the signature.
+ * @param[in] c_type type of elliptic curve.
+ * @param pub public key
+ * @param sig64 signature.
+ * @param digest32 digest of message.
+ * @note Note that:
+ *  - The signature is encode in 64 bytes;
+ *  - The digest is store in 32 bytes;
+ * @return true on success, false otherwise.
+ */
+bool Verify(CurveType cType, const CurvePoint &pub, const uint8_t *sig64, const uint8_t *digest32);
 
+/**
+ * Convert the format of signature from 64 bytes to DER
+ * @param sig64 signature encoded in 64 bytes.
+ * @param der signature encoded in DER
+ * @return true on success, false otherwise.
+ */
+bool Sig64ToDer(const uint8_t *sig64, uint8_t *der);
+
+/**
+ * Convert the format of signature from DER to 64 bytes.
+ * @param der signature encoded in DER
+ * @param sig64 signature encoded in 64 bytes.
+ * @return true on success, false otherwise.
+ */
+bool DerToSig64(const uint8_t *der, size_t der_len, uint8_t sig64[64]);
+
+/**
+ * Recover public key from Ecdsa signature.
+ * @param[out] pub public key.
+ * @param[in] c_type type of elliptic curve.
+ * @param[in] h a BN object which indicates the hash of the message
+ * @param[in] r r of signature.
+ * @param[in] s s of signature.
+ * @param[in] v correspond to the choice of public key(a curve point).
+ * @return true on success, false otherwise.
+ */
 bool RecoverPublicKey(safeheron::curve::CurvePoint &pub,
                       safeheron::curve::CurveType c_type,
-                      const safeheron::bignum::BN &m,
+                      const safeheron::bignum::BN &h,
                       const safeheron::bignum::BN &r,
                       const safeheron::bignum::BN &s,
-                      uint j);
+                      uint v);
 
+/**
+ * Recover public key from Ecdsa signature.
+ * @param[out] pub public key
+ * @param[in] c_type type of elliptic curve.
+ * @param[in] sig64 signature
+ * @param[in] sig64_len length of signature(it's always 64)
+ * @param[in] digest32 digest of message.
+ * @param[in] digest32_len length of digest32(it's always 32)
+ * @param[in] v choice of public key
+ * @return true on success, false otherwise.
+ */
 bool RecoverPublicKey(safeheron::curve::CurvePoint &pub,
                       safeheron::curve::CurveType c_type,
                       const uint8_t *sig64, uint sig_len,
-                      const uint8_t *digest, uint digest_len,
+                      const uint8_t *digest32, uint digest32_len,
                       int v);
 
+/**
+ * Verify the public key and signature.
+ * @param[in] expected_pub expected public key
+ * @param[in] c_type type of elliptic curve.
+ * @param[in] h a BN object which indicates the hash of the message
+ * @param[in] r r of signature.
+ * @param[in] s s of signature.
+ * @param[in] v correspond to the choice of public key(a curve point).
+ * @return true on success, false otherwise.
+ */
 bool VerifyPublicKey(const safeheron::curve::CurvePoint &expected_pub,
                      safeheron::curve::CurveType c_type,
-                     const safeheron::bignum::BN &m,
+                     const safeheron::bignum::BN &h,
                      const safeheron::bignum::BN &r,
                      const safeheron::bignum::BN &s,
                      uint v);
 
+/**
+ * Verify the public key and signature.
+ * @param[in] pub public key
+ * @param[in] c_type type of curve
+ * @param[in] sig64 signature
+ * @param[in] sig64_len length of signature(it's always 64)
+ * @param[in] digest32 digest of message.
+ * @param[in] digest32_len length of digest32(it's always 32)
+ * @param[in] v choice of public key
+ * @return true on success, false otherwise.
+ */
 bool VerifyPublicKey(const safeheron::curve::CurvePoint &pub,
                      safeheron::curve::CurveType c_type,
-                     const uint8_t *sig64, uint sig_len,
-                     const uint8_t *digest, uint digest_len,
+                     const uint8_t *sig64, uint sig64_len,
+                     const uint8_t *digest32, uint digest32_len,
                      uint v);
 
 };
@@ -53,4 +132,4 @@ bool VerifyPublicKey(const safeheron::curve::CurvePoint &pub,
 };
 
 
-#endif //CPP_MPC_CURVE_ECDSA_H
+#endif //SFEHERON_CURVE_ECDSA_H

@@ -1,6 +1,12 @@
-//
-// Created by 何剑虹 on 2020/10/22.
-//
+/*
+ * Copyright 2020-2022 Safeheron Inc. All Rights Reserved.
+ *
+ * Licensed under the Apache License 2.0 (the "License").  You may not use
+ * this file except in compliance with the License.  You can obtain a copy
+ * in the file LICENSE in the source distribution or at
+ * https://www.safeheron.com/opensource/license.html
+ */
+
 #include <cstring>
 #include <google/protobuf/stubs/common.h>
 #include "gtest/gtest.h"
@@ -378,10 +384,10 @@ void testNeg(CurveType cType){
     const Curve *curv = safeheron::curve::GetCurveParam(cType);
     CurvePoint a = curv->g * 10;
     CurvePoint b = curv->g * 100;
-    CurvePoint a_neg = a.neg();
-    CurvePoint b_neg = b.neg();
-    EXPECT_TRUE( a + a_neg == zero);
-    EXPECT_TRUE( b + b_neg == zero);
+    CurvePoint a_Neg = a.Neg();
+    CurvePoint b_Neg = b.Neg();
+    EXPECT_TRUE( a + a_Neg == zero);
+    EXPECT_TRUE( b + b_Neg == zero);
 }
 
 TEST(CurvePoint, Neg)
