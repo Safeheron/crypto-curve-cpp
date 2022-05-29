@@ -11,23 +11,20 @@ pkg_search_module(PROTOBUF REQUIRED protobuf)  # this looks for *.pc file
 
 #set(OPENSSL_USE_STATIC_LIBS TRUE)
 find_package(OpenSSL REQUIRED)
-#find_package(CryptoBN REQUIRED)
-#find_package(CryptoEncode REQUIRED)
 find_package(CryptoCurve REQUIRED)
-find_package(GTest REQUIRED)
 
-add_executable(${PROJECT_NAME} curve-point-test.cpp)
+add_executable(${PROJECT_NAME} example.cpp)
 target_include_directories(${PROJECT_NAME} PUBLIC
-        #${CryptoBN_INCLUDE_DIRS}
         ${CryptoCurve_INCLUDE_DIRS}
-        ${GTEST_INCLUDE_DIRS}
         ${PROTOBUF_INCLUDE_DIRS}
+        /usr/local/include  # This directory is included default on linux but not on Mac os
         )
 
+# This directory is included default on linux but not on Mac os
+target_link_directories(${PROJECT_NAME} PUBLIC /usr/local/lib)
+
 target_link_libraries(${PROJECT_NAME} PUBLIC
-        #CryptoBN
         CryptoCurve
         OpenSSL::Crypto
         ${PROTOBUF_LINK_LIBRARIES}
-        ${GTEST_BOTH_LIBRARIES}
         pthread )
