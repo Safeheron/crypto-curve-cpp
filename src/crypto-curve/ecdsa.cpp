@@ -104,7 +104,7 @@ void Sign(const CurveType c_type, const BN &priv, const uint8_t *digest32, uint8
 }
 
 bool Verify(const CurveType c_type, const CurvePoint &pub,
-            const uint8_t *sig, const uint8_t *digest32)
+            const uint8_t *digest32, const uint8_t *sig64)
 {
     assert(sig && digest32);
     if(( c_type != CurveType::SECP256K1 ) && (c_type != CurveType::P256 )){
@@ -116,7 +116,7 @@ bool Verify(const CurveType c_type, const CurvePoint &pub,
     unsigned char pub_key[65];
     pub.EncodeFull(pub_key);
 
-    return 0 == safeheron::_openssl_curve_wrapper::verify_digest(pub.GetEcdsaCurveGrp(), pub_key, sig, digest32);
+    return 0 == safeheron::_openssl_curve_wrapper::verify_digest(pub.GetEcdsaCurveGrp(), pub_key, digest32, sig64);
 }
 
 bool Sig64ToDer(const uint8_t *sig64, uint8_t *der)

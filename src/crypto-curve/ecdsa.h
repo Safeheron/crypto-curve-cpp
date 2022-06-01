@@ -34,14 +34,14 @@ void Sign(safeheron::curve::CurveType c_type, const safeheron::bignum::BN &priv,
  * Verify the signature.
  * @param[in] c_type type of elliptic curve.
  * @param[in] pub public key
- * @param[in] sig64 signature.
  * @param[in] digest32 digest of message.
+ * @param[in] sig64 signature.
  * @note Note that:
  *  - The signature is encode in 64 bytes;
  *  - The digest is store in 32 bytes;
  * @return true on success, false otherwise.
  */
-bool Verify(CurveType cType, const CurvePoint &pub, const uint8_t *sig64, const uint8_t *digest32);
+bool Verify(CurveType cType, const CurvePoint &pub, const uint8_t *digest32, const uint8_t *sig64);
 
 /**
  * Convert the format of signature from 64 bytes to DER
