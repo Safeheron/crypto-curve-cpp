@@ -11,6 +11,7 @@
 #include "openssl_curve_wrapper.h"
 #include <cassert>
 #include <openssl/ec.h>
+#include <cstring>
 
 namespace safeheron{
 namespace _openssl_curve_wrapper {
