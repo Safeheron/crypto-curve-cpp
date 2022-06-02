@@ -27,7 +27,7 @@ namespace safeheron{
 namespace curve {
 namespace ecdsa {
 
-bool RecoverPublicKey(safeheron::curve::CurvePoint &pub, safeheron::curve::CurveType c_type, const safeheron::bignum::BN &h, const safeheron::bignum::BN &r, const safeheron::bignum::BN &s, uint j) {
+bool RecoverPublicKey(safeheron::curve::CurvePoint &pub, safeheron::curve::CurveType c_type, const safeheron::bignum::BN &h, const safeheron::bignum::BN &r, const safeheron::bignum::BN &s, uint32_t j) {
     if(( c_type != CurveType::SECP256K1 ) && (c_type != CurveType::P256 )){
         throw LocatedException(__FILE__, __LINE__, __FUNCTION__, -1, "( c_type != CurveType::SECP256K1 ) && (c_type != CurveType::P256 )");
     }
@@ -58,14 +58,14 @@ bool RecoverPublicKey(safeheron::curve::CurvePoint &pub, safeheron::curve::Curve
     return true;
 }
 
-bool RecoverPublicKey(safeheron::curve::CurvePoint &pub, const CurveType c_type, const uint8_t *sig64, uint sig_len, const uint8_t *digest32, uint digest32_len, uint v){
+bool RecoverPublicKey(safeheron::curve::CurvePoint &pub, const CurveType c_type, const uint8_t *sig64, uint32_t sig_len, const uint8_t *digest32, uint32_t digest32_len, uint32_t v){
     BN m = BN::FromBytesBE(digest32, digest32_len);
     BN r = BN::FromBytesBE(sig64, 32);
     BN s = BN::FromBytesBE(sig64 + 32, 32);
     return RecoverPublicKey(pub, c_type, m , r , s, v);
 }
 
-bool VerifyPublicKey(const safeheron::curve::CurvePoint &expected_pub, safeheron::curve::CurveType c_type, const safeheron::bignum::BN &h, const safeheron::bignum::BN &r, const safeheron::bignum::BN &s, uint v){
+bool VerifyPublicKey(const safeheron::curve::CurvePoint &expected_pub, safeheron::curve::CurveType c_type, const safeheron::bignum::BN &h, const safeheron::bignum::BN &r, const safeheron::bignum::BN &s, uint32_t v){
     if(( c_type != CurveType::SECP256K1 ) && (c_type != CurveType::P256 )){
         throw LocatedException(__FILE__, __LINE__, __FUNCTION__, -1, "( c_type != CurveType::SECP256K1 ) && (c_type != CurveType::P256 )");
     }
@@ -76,9 +76,9 @@ bool VerifyPublicKey(const safeheron::curve::CurvePoint &expected_pub, safeheron
 }
 
 bool VerifyPublicKey(const CurvePoint &pub, const CurveType c_type,
-                     const uint8_t *sig64, uint sig_len,
-                     const uint8_t *digest32, uint digest32_len,
-                     uint v) {
+                     const uint8_t *sig64, uint32_t sig_len,
+                     const uint8_t *digest32, uint32_t digest32_len,
+                     uint32_t v) {
     if(( c_type != CurveType::SECP256K1 ) && (c_type != CurveType::P256 )){
         throw LocatedException(__FILE__, __LINE__, __FUNCTION__, -1, "( c_type != CurveType::SECP256K1 ) && (c_type != CurveType::P256 )");
     }

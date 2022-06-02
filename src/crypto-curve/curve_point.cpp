@@ -34,8 +34,8 @@ namespace curve {
  * 1 -  edwards curve
  * 2 -  montgomery curve
  */
-static uint get_category(CurveType curveType){
-    uint category = static_cast<uint32_t>(curveType) >> 5;
+static uint32_t get_category(CurveType curveType){
+    uint32_t category = static_cast<uint32_t>(curveType) >> 5;
     return category;
 }
 
@@ -44,7 +44,7 @@ void CurvePoint::Reset() {
         return;
     }
 
-    uint category = get_category(curve_type_);
+    uint32_t category = get_category(curve_type_);
     if (0 == category) {
         EC_POINT_clear_free(short_point_);
         short_point_ = nullptr;
@@ -75,7 +75,7 @@ CurvePoint::CurvePoint(CurveType c_type) {
     curve_type_ = c_type;
     curve_grp_ = safeheron::curve::GetCurveGroup(curve_type_);
 
-    uint category = get_category(c_type);
+    uint32_t category = get_category(c_type);
     // Current point is initialized as Infinity Point(Zero Point).
     switch (category) {
         case 0: // Short curve
@@ -110,7 +110,7 @@ CurvePoint::CurvePoint(const CurvePoint &point) {
     curve_grp_ = safeheron::curve::GetCurveGroup(curve_type_);
     if(point.curve_type_ == CurveType::INVALID_CURVE) return;
 
-    uint category = get_category(curve_type_);
+    uint32_t category = get_category(curve_type_);
     switch (category) {
         case 0: // Short curve
         {
@@ -139,7 +139,7 @@ CurvePoint::CurvePoint(const safeheron::bignum::BN &x, const safeheron::bignum::
     curve_type_ = c_type;
     curve_grp_ = safeheron::curve::GetCurveGroup(curve_type_);
 
-    uint category = get_category(c_type);
+    uint32_t category = get_category(c_type);
     switch (category) {
         case 0: // Short curve
         {
@@ -182,7 +182,7 @@ CurvePoint &CurvePoint::operator=(const CurvePoint &point) {
     curve_grp_ = point.curve_grp_;
     if(point.curve_type_ == CurveType::INVALID_CURVE) return *this;
 
-    uint category = get_category(curve_type_);
+    uint32_t category = get_category(curve_type_);
     switch (category) {
         case 0: // Short curve
         {
@@ -232,7 +232,7 @@ bool CurvePoint::IsValid() const {
 bool CurvePoint::ValidatePoint(const safeheron::bignum::BN &x, const safeheron::bignum::BN &y, CurveType c_type) {
     if(c_type == CurveType::INVALID_CURVE) return false;
     const safeheron::curve::Curve *curv = safeheron::curve::GetCurveParam(c_type);
-    uint category = get_category(c_type);
+    uint32_t category = get_category(c_type);
     // Current point is initialized as Infinity Point(Zero Point).
     switch (category) {
         case 0: // Short curve
@@ -275,7 +275,7 @@ bool CurvePoint::PointFromXY(const safeheron::bignum::BN &x, const safeheron::bi
 
 bool CurvePoint::IsInfinity() const {
     if(curve_type_ == CurveType::INVALID_CURVE) return false;
-    uint category = get_category(curve_type_);
+    uint32_t category = get_category(curve_type_);
     switch (category) {
         case 0: // Short curve
         {
@@ -301,7 +301,7 @@ bool CurvePoint::PointFromX(safeheron::bignum::BN &x, bool y_is_odd, CurveType c
     curve_type_ = c_type;
     curve_grp_ = safeheron::curve::GetCurveGroup(curve_type_);
 
-    uint category = get_category(c_type);
+    uint32_t category = get_category(c_type);
     // Current point is initialized as Infinity Point(Zero Point).
     switch (category) {
         case 0: // Short curve
@@ -374,7 +374,7 @@ bool CurvePoint::PointFromY(safeheron::bignum::BN &y, bool x_is_odd, CurveType c
 }
 
 void CurvePoint::EncodeCompressed(uint8_t* pub33) const {
-    uint category = get_category(curve_type_);
+    uint32_t category = get_category(curve_type_);
     switch (category) {
         case 0: // Short curve
         {
@@ -411,7 +411,7 @@ bool CurvePoint::DecodeCompressed(const uint8_t* pub33, CurveType c_type) {
 
 void CurvePoint::EncodeFull(uint8_t* pub65) const {
     // Full public key
-    uint category = get_category(curve_type_);
+    uint32_t category = get_category(curve_type_);
     switch (category) {
         case 0: // Short curve
         {
@@ -489,7 +489,7 @@ CurvePoint CurvePoint::operator+(const CurvePoint &point) const {
     assert(curve_type_ == point.curve_type_);
     CurvePoint res(*this);
 
-    uint category = get_category(curve_type_);
+    uint32_t category = get_category(curve_type_);
     switch (category) {
         case 0: // Short curve
         {
@@ -522,7 +522,7 @@ CurvePoint CurvePoint::operator*(const safeheron::bignum::BN &bn) const {
     assert(curve_type_ != CurveType::INVALID_CURVE);
     CurvePoint res(*this);
     const safeheron::curve::Curve *curv = safeheron::curve::GetCurveParam(curve_type_);
-    uint category = get_category(curve_type_);
+    uint32_t category = get_category(curve_type_);
     switch (category) {
         case 0: // Short curve
         {
@@ -560,7 +560,7 @@ CurvePoint CurvePoint::operator*(long n) const {
 CurvePoint &CurvePoint::operator+=(const CurvePoint &point){
     assert(curve_type_ != CurveType::INVALID_CURVE);
     assert(curve_type_ == point.curve_type_);
-    uint category = get_category(curve_type_);
+    uint32_t category = get_category(curve_type_);
     switch (category) {
         case 0: // Short curve
         {
@@ -592,7 +592,7 @@ CurvePoint &CurvePoint::operator-=(const CurvePoint &point){
 CurvePoint &CurvePoint::operator*=(const safeheron::bignum::BN &bn){
     assert(curve_type_ != CurveType::INVALID_CURVE);
     const safeheron::curve::Curve *curv = safeheron::curve::GetCurveParam(curve_type_);
-    uint category = get_category(curve_type_);
+    uint32_t category = get_category(curve_type_);
     switch (category) {
         case 0: // Short curve
         {
@@ -628,7 +628,7 @@ CurvePoint CurvePoint::Neg() const {
 
     CurvePoint res(*this);
 
-    uint category = get_category(curve_type_);
+    uint32_t category = get_category(curve_type_);
     switch (category) {
         case 0: // Short curve
         {
@@ -655,7 +655,7 @@ bool CurvePoint::operator==(const CurvePoint &point) const {
     bool same_mem = false;
     bool same_type = (curve_type_ == point.curve_type_);
 
-    uint category = get_category(curve_type_);
+    uint32_t category = get_category(curve_type_);
     switch (category) {
         case 0: // Short curve
         {
@@ -682,7 +682,7 @@ bool CurvePoint::operator!=(const CurvePoint &point) const {
 }
 
 safeheron::bignum::BN CurvePoint::x() const {
-    uint category = get_category(curve_type_);
+    uint32_t category = get_category(curve_type_);
     switch (category) {
         case 0: // Short curve
         {
@@ -724,7 +724,7 @@ safeheron::bignum::BN CurvePoint::x() const {
 
 safeheron::bignum::BN CurvePoint::y() const {
     BN y;
-    uint category = get_category(curve_type_);
+    uint32_t category = get_category(curve_type_);
     switch (category) {
         case 0: // Short curve
         {

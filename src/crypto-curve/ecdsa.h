@@ -75,7 +75,7 @@ bool RecoverPublicKey(safeheron::curve::CurvePoint &pub,
                       const safeheron::bignum::BN &h,
                       const safeheron::bignum::BN &r,
                       const safeheron::bignum::BN &s,
-                      uint v);
+                      uint32_t v);
 
 /**
  * Recover public key from Ecdsa signature.
@@ -90,8 +90,8 @@ bool RecoverPublicKey(safeheron::curve::CurvePoint &pub,
  */
 bool RecoverPublicKey(safeheron::curve::CurvePoint &pub,
                       safeheron::curve::CurveType c_type,
-                      const uint8_t *sig64, uint sig_len,
-                      const uint8_t *digest32, uint digest32_len,
+                      const uint8_t *sig64, uint32_t sig_len,
+                      const uint8_t *digest32, uint32_t digest32_len,
                       int v);
 
 /**
@@ -109,7 +109,7 @@ bool VerifyPublicKey(const safeheron::curve::CurvePoint &expected_pub,
                      const safeheron::bignum::BN &h,
                      const safeheron::bignum::BN &r,
                      const safeheron::bignum::BN &s,
-                     uint v);
+                     uint32_t v);
 
 /**
  * Verify the public key and signature.
@@ -124,9 +124,9 @@ bool VerifyPublicKey(const safeheron::curve::CurvePoint &expected_pub,
  */
 bool VerifyPublicKey(const safeheron::curve::CurvePoint &pub,
                      safeheron::curve::CurveType c_type,
-                     const uint8_t *sig64, uint sig64_len,
-                     const uint8_t *digest32, uint digest32_len,
-                     uint v);
+                     const uint8_t *sig64, uint32_t sig64_len,
+                     const uint8_t *digest32, uint32_t digest32_len,
+                     uint32_t v);
 
 };
 };
