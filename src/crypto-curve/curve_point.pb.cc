@@ -5,48 +5,41 @@
 
 #include <algorithm>
 
-#include <google/protobuf/stubs/common.h>
 #include <google/protobuf/io/coded_stream.h>
 #include <google/protobuf/extension_set.h>
-#include <google/protobuf/wire_format_lite_inl.h>
+#include <google/protobuf/wire_format_lite.h>
 #include <google/protobuf/descriptor.h>
 #include <google/protobuf/generated_message_reflection.h>
 #include <google/protobuf/reflection_ops.h>
 #include <google/protobuf/wire_format.h>
 // @@protoc_insertion_point(includes)
 #include <google/protobuf/port_def.inc>
-
 namespace safeheron {
 namespace proto {
 class CurvePointDefaultTypeInternal {
  public:
-  ::google::protobuf::internal::ExplicitlyConstructed<CurvePoint> _instance;
+  ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<CurvePoint> _instance;
 } _CurvePoint_default_instance_;
 }  // namespace proto
 }  // namespace safeheron
-static void InitDefaultsCurvePoint_curve_5fpoint_2eproto() {
+static void InitDefaultsscc_info_CurvePoint_curve_5fpoint_2eproto() {
   GOOGLE_PROTOBUF_VERIFY_VERSION;
 
   {
     void* ptr = &::safeheron::proto::_CurvePoint_default_instance_;
     new (ptr) ::safeheron::proto::CurvePoint();
-    ::google::protobuf::internal::OnShutdownDestroyMessage(ptr);
+    ::PROTOBUF_NAMESPACE_ID::internal::OnShutdownDestroyMessage(ptr);
   }
-  ::safeheron::proto::CurvePoint::InitAsDefaultInstance();
 }
 
-::google::protobuf::internal::SCCInfo<0> scc_info_CurvePoint_curve_5fpoint_2eproto =
-    {{ATOMIC_VAR_INIT(::google::protobuf::internal::SCCInfoBase::kUninitialized), 0, InitDefaultsCurvePoint_curve_5fpoint_2eproto}, {}};
+::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<0> scc_info_CurvePoint_curve_5fpoint_2eproto =
+    {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 0, 0, InitDefaultsscc_info_CurvePoint_curve_5fpoint_2eproto}, {}};
 
-void InitDefaults_curve_5fpoint_2eproto() {
-  ::google::protobuf::internal::InitSCC(&scc_info_CurvePoint_curve_5fpoint_2eproto.base);
-}
+static ::PROTOBUF_NAMESPACE_ID::Metadata file_level_metadata_curve_5fpoint_2eproto[1];
+static constexpr ::PROTOBUF_NAMESPACE_ID::EnumDescriptor const** file_level_enum_descriptors_curve_5fpoint_2eproto = nullptr;
+static constexpr ::PROTOBUF_NAMESPACE_ID::ServiceDescriptor const** file_level_service_descriptors_curve_5fpoint_2eproto = nullptr;
 
-::google::protobuf::Metadata file_level_metadata_curve_5fpoint_2eproto[1];
-constexpr ::google::protobuf::EnumDescriptor const** file_level_enum_descriptors_curve_5fpoint_2eproto = nullptr;
-constexpr ::google::protobuf::ServiceDescriptor const** file_level_service_descriptors_curve_5fpoint_2eproto = nullptr;
-
-const ::google::protobuf::uint32 TableStruct_curve_5fpoint_2eproto::offsets[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) = {
+const ::PROTOBUF_NAMESPACE_ID::uint32 TableStruct_curve_5fpoint_2eproto::offsets[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) = {
   ~0u,  // no _has_bits_
   PROTOBUF_FIELD_OFFSET(::safeheron::proto::CurvePoint, _internal_metadata_),
   ~0u,  // no _extensions_
@@ -56,367 +49,212 @@ const ::google::protobuf::uint32 TableStruct_curve_5fpoint_2eproto::offsets[] PR
   PROTOBUF_FIELD_OFFSET(::safeheron::proto::CurvePoint, y_),
   PROTOBUF_FIELD_OFFSET(::safeheron::proto::CurvePoint, curve_),
 };
-static const ::google::protobuf::internal::MigrationSchema schemas[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) = {
+static const ::PROTOBUF_NAMESPACE_ID::internal::MigrationSchema schemas[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) = {
   { 0, -1, sizeof(::safeheron::proto::CurvePoint)},
 };
 
-static ::google::protobuf::Message const * const file_default_instances[] = {
-  reinterpret_cast<const ::google::protobuf::Message*>(&::safeheron::proto::_CurvePoint_default_instance_),
+static ::PROTOBUF_NAMESPACE_ID::Message const * const file_default_instances[] = {
+  reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::safeheron::proto::_CurvePoint_default_instance_),
 };
 
-::google::protobuf::internal::AssignDescriptorsTable assign_descriptors_table_curve_5fpoint_2eproto = {
-  {}, AddDescriptors_curve_5fpoint_2eproto, "curve_point.proto", schemas,
-  file_default_instances, TableStruct_curve_5fpoint_2eproto::offsets,
-  file_level_metadata_curve_5fpoint_2eproto, 1, file_level_enum_descriptors_curve_5fpoint_2eproto, file_level_service_descriptors_curve_5fpoint_2eproto,
-};
-
-const char descriptor_table_protodef_curve_5fpoint_2eproto[] =
+const char descriptor_table_protodef_curve_5fpoint_2eproto[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) =
   "\n\021curve_point.proto\022\017safeheron.proto\"1\n\n"
   "CurvePoint\022\t\n\001x\030\001 \001(\t\022\t\n\001y\030\002 \001(\t\022\r\n\005curv"
   "e\030\003 \001(\tb\006proto3"
   ;
-::google::protobuf::internal::DescriptorTable descriptor_table_curve_5fpoint_2eproto = {
-  false, InitDefaults_curve_5fpoint_2eproto, 
-  descriptor_table_protodef_curve_5fpoint_2eproto,
-  "curve_point.proto", &assign_descriptors_table_curve_5fpoint_2eproto, 95,
+static const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable*const descriptor_table_curve_5fpoint_2eproto_deps[1] = {
+};
+static ::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase*const descriptor_table_curve_5fpoint_2eproto_sccs[1] = {
+  &scc_info_CurvePoint_curve_5fpoint_2eproto.base,
+};
+static ::PROTOBUF_NAMESPACE_ID::internal::once_flag descriptor_table_curve_5fpoint_2eproto_once;
+const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable descriptor_table_curve_5fpoint_2eproto = {
+  false, false, descriptor_table_protodef_curve_5fpoint_2eproto, "curve_point.proto", 95,
+  &descriptor_table_curve_5fpoint_2eproto_once, descriptor_table_curve_5fpoint_2eproto_sccs, descriptor_table_curve_5fpoint_2eproto_deps, 1, 0,
+  schemas, file_default_instances, TableStruct_curve_5fpoint_2eproto::offsets,
+  file_level_metadata_curve_5fpoint_2eproto, 1, file_level_enum_descriptors_curve_5fpoint_2eproto, file_level_service_descriptors_curve_5fpoint_2eproto,
 };
 
-void AddDescriptors_curve_5fpoint_2eproto() {
-  static constexpr ::google::protobuf::internal::InitFunc deps[1] =
-  {
-  };
- ::google::protobuf::internal::AddDescriptors(&descriptor_table_curve_5fpoint_2eproto, deps, 0);
-}
-
 // Force running AddDescriptors() at dynamic initialization time.
-static bool dynamic_init_dummy_curve_5fpoint_2eproto = []() { AddDescriptors_curve_5fpoint_2eproto(); return true; }();
+static bool dynamic_init_dummy_curve_5fpoint_2eproto = (static_cast<void>(::PROTOBUF_NAMESPACE_ID::internal::AddDescriptors(&descriptor_table_curve_5fpoint_2eproto)), true);
 namespace safeheron {
 namespace proto {
 
 // ===================================================================
 
-void CurvePoint::InitAsDefaultInstance() {
-}
-class CurvePoint::HasBitSetters {
+class CurvePoint::_Internal {
  public:
 };
 
-#if !defined(_MSC_VER) || _MSC_VER >= 1900
-const int CurvePoint::kXFieldNumber;
-const int CurvePoint::kYFieldNumber;
-const int CurvePoint::kCurveFieldNumber;
-#endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
-
-CurvePoint::CurvePoint()
-  : ::google::protobuf::Message(), _internal_metadata_(nullptr) {
+CurvePoint::CurvePoint(::PROTOBUF_NAMESPACE_ID::Arena* arena)
+  : ::PROTOBUF_NAMESPACE_ID::Message(arena) {
   SharedCtor();
-  // @@protoc_insertion_point(constructor:safeheron.proto.CurvePoint)
+  RegisterArenaDtor(arena);
+  // @@protoc_insertion_point(arena_constructor:safeheron.proto.CurvePoint)
 }
 CurvePoint::CurvePoint(const CurvePoint& from)
-  : ::google::protobuf::Message(),
-      _internal_metadata_(nullptr) {
-  _internal_metadata_.MergeFrom(from._internal_metadata_);
-  x_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  if (from.x().size() > 0) {
-    x_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.x_);
+  : ::PROTOBUF_NAMESPACE_ID::Message() {
+  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+  x_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+  if (!from._internal_x().empty()) {
+    x_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, from._internal_x(), 
+      GetArena());
   }
-  y_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  if (from.y().size() > 0) {
-    y_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.y_);
+  y_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+  if (!from._internal_y().empty()) {
+    y_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, from._internal_y(), 
+      GetArena());
   }
-  curve_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  if (from.curve().size() > 0) {
-    curve_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.curve_);
+  curve_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+  if (!from._internal_curve().empty()) {
+    curve_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, from._internal_curve(), 
+      GetArena());
   }
   // @@protoc_insertion_point(copy_constructor:safeheron.proto.CurvePoint)
 }
 
 void CurvePoint::SharedCtor() {
-  ::google::protobuf::internal::InitSCC(
-      &scc_info_CurvePoint_curve_5fpoint_2eproto.base);
-  x_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  y_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  curve_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&scc_info_CurvePoint_curve_5fpoint_2eproto.base);
+  x_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+  y_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+  curve_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
 }
 
 CurvePoint::~CurvePoint() {
   // @@protoc_insertion_point(destructor:safeheron.proto.CurvePoint)
   SharedDtor();
+  _internal_metadata_.Delete<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
 void CurvePoint::SharedDtor() {
-  x_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  y_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  curve_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  GOOGLE_DCHECK(GetArena() == nullptr);
+  x_.DestroyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+  y_.DestroyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+  curve_.DestroyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
 }
 
+void CurvePoint::ArenaDtor(void* object) {
+  CurvePoint* _this = reinterpret_cast< CurvePoint* >(object);
+  (void)_this;
+}
+void CurvePoint::RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena*) {
+}
 void CurvePoint::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
 const CurvePoint& CurvePoint::default_instance() {
-  ::google::protobuf::internal::InitSCC(&::scc_info_CurvePoint_curve_5fpoint_2eproto.base);
+  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&::scc_info_CurvePoint_curve_5fpoint_2eproto.base);
   return *internal_default_instance();
 }
 
 
 void CurvePoint::Clear() {
 // @@protoc_insertion_point(message_clear_start:safeheron.proto.CurvePoint)
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  x_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  y_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  curve_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  _internal_metadata_.Clear();
+  x_.ClearToEmpty();
+  y_.ClearToEmpty();
+  curve_.ClearToEmpty();
+  _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
-#if GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
-const char* CurvePoint::_InternalParse(const char* begin, const char* end, void* object,
-                  ::google::protobuf::internal::ParseContext* ctx) {
-  auto msg = static_cast<CurvePoint*>(object);
-  ::google::protobuf::int32 size; (void)size;
-  int depth; (void)depth;
-  ::google::protobuf::uint32 tag;
-  ::google::protobuf::internal::ParseFunc parser_till_end; (void)parser_till_end;
-  auto ptr = begin;
-  while (ptr < end) {
-    ptr = ::google::protobuf::io::Parse32(ptr, &tag);
-    GOOGLE_PROTOBUF_PARSER_ASSERT(ptr);
+const char* CurvePoint::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
+#define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
+  while (!ctx->Done(&ptr)) {
+    ::PROTOBUF_NAMESPACE_ID::uint32 tag;
+    ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
+    CHK_(ptr);
     switch (tag >> 3) {
       // string x = 1;
-      case 1: {
-        if (static_cast<::google::protobuf::uint8>(tag) != 10) goto handle_unusual;
-        ptr = ::google::protobuf::io::ReadSize(ptr, &size);
-        GOOGLE_PROTOBUF_PARSER_ASSERT(ptr);
-        ctx->extra_parse_data().SetFieldName("safeheron.proto.CurvePoint.x");
-        object = msg->mutable_x();
-        if (size > end - ptr + ::google::protobuf::internal::ParseContext::kSlopBytes) {
-          parser_till_end = ::google::protobuf::internal::GreedyStringParserUTF8;
-          goto string_till_end;
-        }
-        GOOGLE_PROTOBUF_PARSER_ASSERT(::google::protobuf::internal::StringCheckUTF8(ptr, size, ctx));
-        ::google::protobuf::internal::InlineGreedyStringParser(object, ptr, size, ctx);
-        ptr += size;
-        break;
-      }
+      case 1:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 10)) {
+          auto str = _internal_mutable_x();
+          ptr = ::PROTOBUF_NAMESPACE_ID::internal::InlineGreedyStringParser(str, ptr, ctx);
+          CHK_(::PROTOBUF_NAMESPACE_ID::internal::VerifyUTF8(str, "safeheron.proto.CurvePoint.x"));
+          CHK_(ptr);
+        } else goto handle_unusual;
+        continue;
       // string y = 2;
-      case 2: {
-        if (static_cast<::google::protobuf::uint8>(tag) != 18) goto handle_unusual;
-        ptr = ::google::protobuf::io::ReadSize(ptr, &size);
-        GOOGLE_PROTOBUF_PARSER_ASSERT(ptr);
-        ctx->extra_parse_data().SetFieldName("safeheron.proto.CurvePoint.y");
-        object = msg->mutable_y();
-        if (size > end - ptr + ::google::protobuf::internal::ParseContext::kSlopBytes) {
-          parser_till_end = ::google::protobuf::internal::GreedyStringParserUTF8;
-          goto string_till_end;
-        }
-        GOOGLE_PROTOBUF_PARSER_ASSERT(::google::protobuf::internal::StringCheckUTF8(ptr, size, ctx));
-        ::google::protobuf::internal::InlineGreedyStringParser(object, ptr, size, ctx);
-        ptr += size;
-        break;
-      }
+      case 2:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 18)) {
+          auto str = _internal_mutable_y();
+          ptr = ::PROTOBUF_NAMESPACE_ID::internal::InlineGreedyStringParser(str, ptr, ctx);
+          CHK_(::PROTOBUF_NAMESPACE_ID::internal::VerifyUTF8(str, "safeheron.proto.CurvePoint.y"));
+          CHK_(ptr);
+        } else goto handle_unusual;
+        continue;
       // string curve = 3;
-      case 3: {
-        if (static_cast<::google::protobuf::uint8>(tag) != 26) goto handle_unusual;
-        ptr = ::google::protobuf::io::ReadSize(ptr, &size);
-        GOOGLE_PROTOBUF_PARSER_ASSERT(ptr);
-        ctx->extra_parse_data().SetFieldName("safeheron.proto.CurvePoint.curve");
-        object = msg->mutable_curve();
-        if (size > end - ptr + ::google::protobuf::internal::ParseContext::kSlopBytes) {
-          parser_till_end = ::google::protobuf::internal::GreedyStringParserUTF8;
-          goto string_till_end;
-        }
-        GOOGLE_PROTOBUF_PARSER_ASSERT(::google::protobuf::internal::StringCheckUTF8(ptr, size, ctx));
-        ::google::protobuf::internal::InlineGreedyStringParser(object, ptr, size, ctx);
-        ptr += size;
-        break;
-      }
+      case 3:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 26)) {
+          auto str = _internal_mutable_curve();
+          ptr = ::PROTOBUF_NAMESPACE_ID::internal::InlineGreedyStringParser(str, ptr, ctx);
+          CHK_(::PROTOBUF_NAMESPACE_ID::internal::VerifyUTF8(str, "safeheron.proto.CurvePoint.curve"));
+          CHK_(ptr);
+        } else goto handle_unusual;
+        continue;
       default: {
       handle_unusual:
         if ((tag & 7) == 4 || tag == 0) {
-          ctx->EndGroup(tag);
-          return ptr;
+          ctx->SetLastTag(tag);
+          goto success;
         }
-        auto res = UnknownFieldParse(tag, {_InternalParse, msg},
-          ptr, end, msg->_internal_metadata_.mutable_unknown_fields(), ctx);
-        ptr = res.first;
-        GOOGLE_PROTOBUF_PARSER_ASSERT(ptr != nullptr);
-        if (res.second) return ptr;
+        ptr = UnknownFieldParse(tag,
+            _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
+            ptr, ctx);
+        CHK_(ptr != nullptr);
+        continue;
       }
     }  // switch
   }  // while
-  return ptr;
-string_till_end:
-  static_cast<::std::string*>(object)->clear();
-  static_cast<::std::string*>(object)->reserve(size);
-  goto len_delim_till_end;
-len_delim_till_end:
-  return ctx->StoreAndTailCall(ptr, end, {_InternalParse, msg},
-                               {parser_till_end, object}, size);
-}
-#else  // GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
-bool CurvePoint::MergePartialFromCodedStream(
-    ::google::protobuf::io::CodedInputStream* input) {
-#define DO_(EXPRESSION) if (!PROTOBUF_PREDICT_TRUE(EXPRESSION)) goto failure
-  ::google::protobuf::uint32 tag;
-  // @@protoc_insertion_point(parse_start:safeheron.proto.CurvePoint)
-  for (;;) {
-    ::std::pair<::google::protobuf::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
-    tag = p.first;
-    if (!p.second) goto handle_unusual;
-    switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
-      // string x = 1;
-      case 1: {
-        if (static_cast< ::google::protobuf::uint8>(tag) == (10 & 0xFF)) {
-          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
-                input, this->mutable_x()));
-          DO_(::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-            this->x().data(), static_cast<int>(this->x().length()),
-            ::google::protobuf::internal::WireFormatLite::PARSE,
-            "safeheron.proto.CurvePoint.x"));
-        } else {
-          goto handle_unusual;
-        }
-        break;
-      }
-
-      // string y = 2;
-      case 2: {
-        if (static_cast< ::google::protobuf::uint8>(tag) == (18 & 0xFF)) {
-          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
-                input, this->mutable_y()));
-          DO_(::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-            this->y().data(), static_cast<int>(this->y().length()),
-            ::google::protobuf::internal::WireFormatLite::PARSE,
-            "safeheron.proto.CurvePoint.y"));
-        } else {
-          goto handle_unusual;
-        }
-        break;
-      }
-
-      // string curve = 3;
-      case 3: {
-        if (static_cast< ::google::protobuf::uint8>(tag) == (26 & 0xFF)) {
-          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
-                input, this->mutable_curve()));
-          DO_(::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-            this->curve().data(), static_cast<int>(this->curve().length()),
-            ::google::protobuf::internal::WireFormatLite::PARSE,
-            "safeheron.proto.CurvePoint.curve"));
-        } else {
-          goto handle_unusual;
-        }
-        break;
-      }
-
-      default: {
-      handle_unusual:
-        if (tag == 0) {
-          goto success;
-        }
-        DO_(::google::protobuf::internal::WireFormat::SkipField(
-              input, tag, _internal_metadata_.mutable_unknown_fields()));
-        break;
-      }
-    }
-  }
 success:
-  // @@protoc_insertion_point(parse_success:safeheron.proto.CurvePoint)
-  return true;
+  return ptr;
 failure:
-  // @@protoc_insertion_point(parse_failure:safeheron.proto.CurvePoint)
-  return false;
-#undef DO_
-}
-#endif  // GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
-
-void CurvePoint::SerializeWithCachedSizes(
-    ::google::protobuf::io::CodedOutputStream* output) const {
-  // @@protoc_insertion_point(serialize_start:safeheron.proto.CurvePoint)
-  ::google::protobuf::uint32 cached_has_bits = 0;
-  (void) cached_has_bits;
-
-  // string x = 1;
-  if (this->x().size() > 0) {
-    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-      this->x().data(), static_cast<int>(this->x().length()),
-      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
-      "safeheron.proto.CurvePoint.x");
-    ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
-      1, this->x(), output);
-  }
-
-  // string y = 2;
-  if (this->y().size() > 0) {
-    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-      this->y().data(), static_cast<int>(this->y().length()),
-      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
-      "safeheron.proto.CurvePoint.y");
-    ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
-      2, this->y(), output);
-  }
-
-  // string curve = 3;
-  if (this->curve().size() > 0) {
-    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-      this->curve().data(), static_cast<int>(this->curve().length()),
-      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
-      "safeheron.proto.CurvePoint.curve");
-    ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
-      3, this->curve(), output);
-  }
-
-  if (_internal_metadata_.have_unknown_fields()) {
-    ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
-        _internal_metadata_.unknown_fields(), output);
-  }
-  // @@protoc_insertion_point(serialize_end:safeheron.proto.CurvePoint)
+  ptr = nullptr;
+  goto success;
+#undef CHK_
 }
 
-::google::protobuf::uint8* CurvePoint::InternalSerializeWithCachedSizesToArray(
-    ::google::protobuf::uint8* target) const {
+::PROTOBUF_NAMESPACE_ID::uint8* CurvePoint::_InternalSerialize(
+    ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:safeheron.proto.CurvePoint)
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
   // string x = 1;
   if (this->x().size() > 0) {
-    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-      this->x().data(), static_cast<int>(this->x().length()),
-      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
+      this->_internal_x().data(), static_cast<int>(this->_internal_x().length()),
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
       "safeheron.proto.CurvePoint.x");
-    target =
-      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
-        1, this->x(), target);
+    target = stream->WriteStringMaybeAliased(
+        1, this->_internal_x(), target);
   }
 
   // string y = 2;
   if (this->y().size() > 0) {
-    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-      this->y().data(), static_cast<int>(this->y().length()),
-      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
+      this->_internal_y().data(), static_cast<int>(this->_internal_y().length()),
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
       "safeheron.proto.CurvePoint.y");
-    target =
-      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
-        2, this->y(), target);
+    target = stream->WriteStringMaybeAliased(
+        2, this->_internal_y(), target);
   }
 
   // string curve = 3;
   if (this->curve().size() > 0) {
-    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-      this->curve().data(), static_cast<int>(this->curve().length()),
-      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
+      this->_internal_curve().data(), static_cast<int>(this->_internal_curve().length()),
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
       "safeheron.proto.CurvePoint.curve");
-    target =
-      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
-        3, this->curve(), target);
+    target = stream->WriteStringMaybeAliased(
+        3, this->_internal_curve(), target);
   }
 
-  if (_internal_metadata_.have_unknown_fields()) {
-    target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
-        _internal_metadata_.unknown_fields(), target);
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::InternalSerializeUnknownFieldsToArray(
+        _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
   }
   // @@protoc_insertion_point(serialize_to_array_end:safeheron.proto.CurvePoint)
   return target;
@@ -426,50 +264,49 @@ size_t CurvePoint::ByteSizeLong() const {
 // @@protoc_insertion_point(message_byte_size_start:safeheron.proto.CurvePoint)
   size_t total_size = 0;
 
-  if (_internal_metadata_.have_unknown_fields()) {
-    total_size +=
-      ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
-        _internal_metadata_.unknown_fields());
-  }
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
   // string x = 1;
   if (this->x().size() > 0) {
     total_size += 1 +
-      ::google::protobuf::internal::WireFormatLite::StringSize(
-        this->x());
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
+        this->_internal_x());
   }
 
   // string y = 2;
   if (this->y().size() > 0) {
     total_size += 1 +
-      ::google::protobuf::internal::WireFormatLite::StringSize(
-        this->y());
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
+        this->_internal_y());
   }
 
   // string curve = 3;
   if (this->curve().size() > 0) {
     total_size += 1 +
-      ::google::protobuf::internal::WireFormatLite::StringSize(
-        this->curve());
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
+        this->_internal_curve());
   }
 
-  int cached_size = ::google::protobuf::internal::ToCachedSize(total_size);
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    return ::PROTOBUF_NAMESPACE_ID::internal::ComputeUnknownFieldsSize(
+        _internal_metadata_, total_size, &_cached_size_);
+  }
+  int cached_size = ::PROTOBUF_NAMESPACE_ID::internal::ToCachedSize(total_size);
   SetCachedSize(cached_size);
   return total_size;
 }
 
-void CurvePoint::MergeFrom(const ::google::protobuf::Message& from) {
+void CurvePoint::MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
 // @@protoc_insertion_point(generalized_merge_from_start:safeheron.proto.CurvePoint)
   GOOGLE_DCHECK_NE(&from, this);
   const CurvePoint* source =
-      ::google::protobuf::DynamicCastToGenerated<CurvePoint>(
+      ::PROTOBUF_NAMESPACE_ID::DynamicCastToGenerated<CurvePoint>(
           &from);
   if (source == nullptr) {
   // @@protoc_insertion_point(generalized_merge_from_cast_fail:safeheron.proto.CurvePoint)
-    ::google::protobuf::internal::ReflectionOps::Merge(from, this);
+    ::PROTOBUF_NAMESPACE_ID::internal::ReflectionOps::Merge(from, this);
   } else {
   // @@protoc_insertion_point(generalized_merge_from_cast_success:safeheron.proto.CurvePoint)
     MergeFrom(*source);
@@ -479,25 +316,22 @@ void CurvePoint::MergeFrom(const ::google::protobuf::Message& from) {
 void CurvePoint::MergeFrom(const CurvePoint& from) {
 // @@protoc_insertion_point(class_specific_merge_from_start:safeheron.proto.CurvePoint)
   GOOGLE_DCHECK_NE(&from, this);
-  _internal_metadata_.MergeFrom(from._internal_metadata_);
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
   if (from.x().size() > 0) {
-
-    x_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.x_);
+    _internal_set_x(from._internal_x());
   }
   if (from.y().size() > 0) {
-
-    y_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.y_);
+    _internal_set_y(from._internal_y());
   }
   if (from.curve().size() > 0) {
-
-    curve_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.curve_);
+    _internal_set_curve(from._internal_curve());
   }
 }
 
-void CurvePoint::CopyFrom(const ::google::protobuf::Message& from) {
+void CurvePoint::CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
 // @@protoc_insertion_point(generalized_copy_from_start:safeheron.proto.CurvePoint)
   if (&from == this) return;
   Clear();
@@ -515,37 +349,27 @@ bool CurvePoint::IsInitialized() const {
   return true;
 }
 
-void CurvePoint::Swap(CurvePoint* other) {
-  if (other == this) return;
-  InternalSwap(other);
-}
 void CurvePoint::InternalSwap(CurvePoint* other) {
   using std::swap;
-  _internal_metadata_.Swap(&other->_internal_metadata_);
-  x_.Swap(&other->x_, &::google::protobuf::internal::GetEmptyStringAlreadyInited(),
-    GetArenaNoVirtual());
-  y_.Swap(&other->y_, &::google::protobuf::internal::GetEmptyStringAlreadyInited(),
-    GetArenaNoVirtual());
-  curve_.Swap(&other->curve_, &::google::protobuf::internal::GetEmptyStringAlreadyInited(),
-    GetArenaNoVirtual());
+  _internal_metadata_.Swap<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(&other->_internal_metadata_);
+  x_.Swap(&other->x_, &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
+  y_.Swap(&other->y_, &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
+  curve_.Swap(&other->curve_, &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
 }
 
-::google::protobuf::Metadata CurvePoint::GetMetadata() const {
-  ::google::protobuf::internal::AssignDescriptors(&::assign_descriptors_table_curve_5fpoint_2eproto);
-  return ::file_level_metadata_curve_5fpoint_2eproto[kIndexInFileMessages];
+::PROTOBUF_NAMESPACE_ID::Metadata CurvePoint::GetMetadata() const {
+  return GetMetadataStatic();
 }
 
 
 // @@protoc_insertion_point(namespace_scope)
 }  // namespace proto
 }  // namespace safeheron
-namespace google {
-namespace protobuf {
+PROTOBUF_NAMESPACE_OPEN
 template<> PROTOBUF_NOINLINE ::safeheron::proto::CurvePoint* Arena::CreateMaybeMessage< ::safeheron::proto::CurvePoint >(Arena* arena) {
-  return Arena::CreateInternal< ::safeheron::proto::CurvePoint >(arena);
+  return Arena::CreateMessageInternal< ::safeheron::proto::CurvePoint >(arena);
 }
-}  // namespace protobuf
-}  // namespace google
+PROTOBUF_NAMESPACE_CLOSE
 
 // @@protoc_insertion_point(global_scope)
 #include <google/protobuf/port_undef.inc>
