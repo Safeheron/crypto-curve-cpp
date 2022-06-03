@@ -23,6 +23,10 @@ target_sources(${CMAKE_PROJECT_NAME} PRIVATE
         ${ed25519-donna_SOURCES}
 )
 
+target_include_directories(${CMAKE_PROJECT_NAME} PRIVATE
+        ../third_party
+        )
+
 # Refer to single internal library only if it's not assembled into a big library.
 option(ENABLE_ASSEMBLE "Enable assemble" OFF)
 if (NOT ${ENABLE_ASSEMBLE})
@@ -44,7 +48,6 @@ if (NOT ${ENABLE_ASSEMBLE})
 
     target_include_directories(${CMAKE_PROJECT_NAME} PRIVATE
             ${OPENSSL_INCLUDE_DIR}
-            ../third_party
             )
 
     target_link_directories(${CMAKE_PROJECT_NAME} PRIVATE /usr/local/lib)
