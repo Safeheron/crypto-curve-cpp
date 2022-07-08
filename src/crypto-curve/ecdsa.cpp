@@ -92,31 +92,53 @@ void Sign(const CurveType c_type, const BN &priv, const uint8_t *digest32, uint8
     if(( c_type != CurveType::SECP256K1 ) && (c_type != CurveType::P256 )){
         throw LocatedException(__FILE__, __LINE__, __FUNCTION__, -1, "( c_type != CurveType::SECP256K1 ) && (c_type != CurveType::P256 )");
     }
-    unsigned char sk[32];
-    const curve::Curve *curv = curve::GetCurveParam(c_type);
+    //truncate digest32 to 32 bytes
+    uint8_t digest_cut[32];
+    memcpy(digest_cut, digest32, 32);
+    BN z = BN::FromBytesBE(digest_cut, 32);
 
-    priv.ToBytes32BE((uint8_t *)sk);
-
-    int ret = safeheron::_openssl_curve_wrapper::sign_digest(curv->grp, sk, digest32, sig64);
-    if (0 != ret) {
-        throw OpensslException(__FILE__, __LINE__, __FUNCTION__, ret, "(ret = safeheron::_openssl_curve_wrapper::sign_digest(curv->grp, sk, digest32, sig)) != 0");
+    const Curve *curv = safeheron::curve::GetCurveParam(c_type);
+    const BN& n = curv->n;
+    const CurvePoint& g = curv->g;
+    //generate k, r
+    BN r, k, s;
+    while (r.IsZero() || s.IsZero()) {
+        k = safeheron::rand::RandomBNLt(n);
+        CurvePoint P = g * k;
+        r = P.x() % n;
+        s = (k.InvM(n) * (z + r * priv)) % n;
     }
+    r.ToBytes32BE(sig64);
+    s.ToBytes32BE(sig64+32);
 }
 
 bool Verify(const CurveType c_type, const CurvePoint &pub,
             const uint8_t *digest32, const uint8_t *sig64)
 {
-    assert(sig && digest32);
-    if(( c_type != CurveType::SECP256K1 ) && (c_type != CurveType::P256 )){
+    if ( (c_type != CurveType::SECP256K1) && (c_type != CurveType::P256) ){
         throw LocatedException(__FILE__, __LINE__, __FUNCTION__, -1, "( c_type != CurveType::SECP256K1 ) && (c_type != CurveType::P256 )");
     }
+    if(c_type != pub.GetCurveType()) return false;
+    const Curve *curv = safeheron::curve::GetCurveParam(c_type);
+    const CurvePoint& g = curv->g;
+    const BN& n = curv->n;
 
-    if( c_type != pub.GetCurveType() ) return false;
+    uint8_t digest_cut[32];
+    memcpy(digest_cut, digest32, 32);
+    BN z = BN::FromBytesBE(digest_cut, 32);
 
-    unsigned char pub_key[65];
-    pub.EncodeFull(pub_key);
+    uint8_t r_part[32], s_part[32];
+    memcpy(r_part, sig64, 32);
+    memcpy(s_part, sig64+32, 32);
+    BN r = BN::FromBytesBE(r_part, 32);
+    BN s = BN::FromBytesBE(s_part, 32);
 
-    return 0 == safeheron::_openssl_curve_wrapper::verify_digest(pub.GetEcdsaCurveGrp(), pub_key, digest32, sig64);
+    BN u1 = (z * s.InvM(n)) % n;
+    BN u2 = (r * s.InvM(n)) % n;
+
+    CurvePoint P = g * u1 + pub * u2;
+    BN xp = (P.x()) % n;
+    return r == xp;
 }
 
 bool Sig64ToDer(const uint8_t *sig64, uint8_t *der)

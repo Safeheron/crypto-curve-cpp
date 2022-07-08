@@ -28,21 +28,28 @@ void print_hex(const uint8_t* buff, size_t size)
     printf("\n");
 }
 
-int test_curve_sign(CurveType type, BN &privkey, CurvePoint &pubkey, int times)
+int test_curve_sign(CurveType type, int times)
 {
     int cur_time = 0;
-    int sig_len = 64;
     const int DIGEST_SIZE = 32;
-    uint8_t digest[DIGEST_SIZE] = {0};
-    uint8_t sig[64] = {0};
+    const int SIG_SIZE = 64;
+    const Curve *curv = GetCurveParam(type);
 
     do {
+        BN privkey = safeheron::rand::RandomBNLt(curv->n);
+        printf("Private Key: %s\n", privkey.Inspect().c_str());
+
+        CurvePoint pubkey = curv->g * privkey;
+        printf("Public Key: %s\n", pubkey.Inspect().c_str());
+
+        uint8_t digest[DIGEST_SIZE] = {0};
         safeheron::rand::RandomBytes(digest, DIGEST_SIZE);
         printf("data: "); print_hex(digest, DIGEST_SIZE);
 
-        memset(sig, 0, 64);
+        uint8_t sig[SIG_SIZE] = {0};
+        //    memset(sig, 0, 64);
         safeheron::curve::ecdsa::Sign(type, privkey, digest, sig);
-        printf("sign: "); print_hex(sig, 64);
+        printf("sign: "); print_hex(sig, SIG_SIZE);
 
         bool pass = safeheron::curve::ecdsa::Verify(type, pubkey, digest, sig);
         EXPECT_TRUE(pass == true);
@@ -52,41 +59,18 @@ int test_curve_sign(CurveType type, BN &privkey, CurvePoint &pubkey, int times)
         else {
             printf("verify passed!\n");
         }
-
     }while (++cur_time < times);
-
     return 0;
-
 }
 
-TEST(curve_sign, SECP256K1)
+TEST(curve, sign_and_verify)
 {
-    const Curve *curv = GetCurveParam(CurveType::SECP256K1);
-    BN priv = safeheron::rand::RandomBNLtGcd(curv->n);
-    CurvePoint pub = curv->g * priv;
-
-    std::string priv_str;
-    priv.ToHexStr(priv_str);
     printf("/*******************SECP256K1 Sign/Verify*********************/\n");
-    printf("Private Key: %s\n", priv_str.c_str());
-    printf("Public Key: %s\n", pub.Inspect().c_str());
-    test_curve_sign(CurveType::SECP256K1, priv, pub, 1000);
+    test_curve_sign(CurveType::SECP256K1,  1000);
     printf("/*******************SECP256K1 Sign/Verify*********************/\n");
     printf("\n\n");
-}
-
-TEST(curve_sign, P256)
-{
-    const Curve *curv = GetCurveParam(CurveType::P256);
-    BN priv = safeheron::rand::RandomBNLtGcd(curv->n);
-    CurvePoint pub = curv->g * priv;
-
-    std::string priv_str;
-    priv.ToHexStr(priv_str);
     printf("/*******************P256 Sign/Verify*********************/\n");
-    printf("Private Key: %s\n", priv_str.c_str());
-    printf("Public Key: %s\n", pub.Inspect().c_str());
-    test_curve_sign(CurveType::P256, priv, pub, 1000);
+    test_curve_sign(CurveType::P256,  1000);
     printf("/*******************P256 Sign/Verify*********************/\n");
     printf("\n\n");
 }
