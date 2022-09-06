@@ -16,7 +16,7 @@ target_sources(${CMAKE_PROJECT_NAME} PRIVATE
         crypto-curve/ed25519_ex.c
         crypto-curve/curve.cpp
         crypto-curve/curve_point.cpp
-        crypto-curve/curve_point.pb.cc
+        crypto-curve/proto_gen/curve_point.pb.switch.cc
         crypto-curve/openssl_curve_wrapper.cpp
         crypto-curve/ecdsa.cpp
         crypto-curve/eddsa.cpp

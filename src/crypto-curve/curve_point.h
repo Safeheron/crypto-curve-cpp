@@ -2,7 +2,7 @@
 #define SAFEHERON_CURVE_POINT_H
 
 #include "crypto-bn/bn.h"
-#include "curve_point.pb.h"
+#include "proto_gen/curve_point.pb.switch.h"
 #include "curve_type.h"
 
 struct ec_group_st;

@@ -1,8 +1,8 @@
 #include <cstring>
 #include <google/protobuf/stubs/common.h>
 #include "gtest/gtest.h"
-#include "safeheron/crypto-bn/rand.h"
-#include "safeheron/crypto-encode/hex.h"
+#include "crypto-bn/rand.h"
+#include "crypto-encode/hex.h"
 #include "../src/crypto-curve/curve.h"
 #include "../src/crypto-curve/eddsa.h"
 
