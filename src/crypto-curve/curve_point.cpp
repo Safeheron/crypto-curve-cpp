@@ -528,7 +528,12 @@ CurvePoint CurvePoint::operator*(const safeheron::bignum::BN &bn) const {
         {
             // For Ed25519
             ed25519_secret_key sk;
-            bn.ToBytes32LE(sk);
+            if(bn.ByteLength() > 32){
+                BN t_bn = bn % curv->n;
+                t_bn.ToBytes32LE(sk);
+            } else{
+                bn.ToBytes32LE(sk);
+            }
             if(*this == curv->g){
                 // Fast multiply
                 ed25519_publickey_pure(sk, res.edwards_point_);
@@ -598,7 +603,12 @@ CurvePoint &CurvePoint::operator*=(const safeheron::bignum::BN &bn){
         {
             // For Ed25519
             ed25519_secret_key sk;
-            bn.ToBytes32LE(sk);
+            if(bn.ByteLength() > 32){
+                BN t_bn = bn % curv->n;
+                t_bn.ToBytes32LE(sk);
+            } else{
+                bn.ToBytes32LE(sk);
+            }
             ed25519_scalarmult_pure(edwards_point_, sk, edwards_point_);
             break;
         }

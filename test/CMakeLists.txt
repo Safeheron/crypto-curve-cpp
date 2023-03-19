@@ -44,3 +44,6 @@ add_test(NAME serialization-json-test COMMAND serialization-json-test)
 
 add_executable(ecdsa-test ecdsa-test.cpp)
 add_test(NAME ecdsa-test COMMAND ecdsa-test)
+
+add_executable(eddsa-test eddsa-test.cpp)
+add_test(NAME eddsa-test COMMAND eddsa-test)

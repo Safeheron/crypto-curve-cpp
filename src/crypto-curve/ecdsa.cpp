@@ -134,7 +134,7 @@ bool Verify(const CurveType c_type, const CurvePoint &pub,
 
 bool Sig64ToDer(const uint8_t *sig64, uint8_t *der)
 {
-    assert(sig && der);
+    assert(sig64 && der);
     bool ret = 0;
     int der_len = 0;
     BIGNUM* bn_r = nullptr;

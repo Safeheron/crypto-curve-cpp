@@ -14,17 +14,29 @@ namespace curve {
 namespace eddsa {
 
 /**
- * Sign a message.
+ * Sign a message with a secret key.
  * @param[in] c_type type of elliptic curve.
- * @param[in] priv private key
+ * @param[in] priv secret key
  * @param[in] pub public key
  * @param[in] msg message
  * @param[in] len length of message
  * @return signature in bytes.
  */
 std::string Sign(const CurveType c_type,
-                 const safeheron::bignum::BN &priv,
+                 const safeheron::bignum::BN &secret,
                  const CurvePoint &pub,
+                 const uint8_t *msg, size_t len);
+
+/**
+ * Sign a message with a private key.
+ * @param[in] c_type type of elliptic curve.
+ * @param[in] priv private key
+ * @param[in] msg message
+ * @param[in] len length of message
+ * @return signature in bytes.
+ */
+std::string Sign(const CurveType c_type,
+                 const safeheron::bignum::BN &priv,
                  const uint8_t *msg, size_t len);
 
 /**

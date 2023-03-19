@@ -1,4 +1,3 @@
-
 #include "openssl_curve_wrapper.h"
 #include <cassert>
 #include <openssl/ec.h>
@@ -121,7 +120,7 @@ int sign_digest(const ec_group_st* grp, const uint8_t *priv_key, const uint8_t *
     const int MAX_TRY_TIMES = 10000;
 
     assert(grp);
-    assert(priv_key && digest && sig);
+    assert(priv_key && digest32 && sig64);
 
     if (!(priv = BN_new()) ||
         !(ec_key = EC_KEY_new_by_curve_name(EC_GROUP_get_curve_name(grp)))) {
@@ -209,7 +208,7 @@ int verify_digest(const ec_group_st* grp, const uint8_t *pub_key, const uint8_t 
     ECDSA_SIG* ecdsa_sig = nullptr;
 
     assert(grp);
-    assert(pub_key && sig && digest );
+    assert(pub_key && sig64 && digest32 );
 
     // only support uncompress public key
     if (pub_key[0] != 0x04) {
