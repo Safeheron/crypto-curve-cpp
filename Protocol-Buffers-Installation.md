@@ -15,7 +15,8 @@ You can also get the source by "git clone" our git repository. Make sure you hav
 ```shell
 git clone https://github.com/protocolbuffers/protobuf.git
 cd protobuf
-git checkout v3.7.1
+# Only version v3.14.0 and v3.20.3 of protobuf are supported.
+git checkout v3.14.0 
 git submodule update --init --recursive
 ./autogen.sh
 ```
@@ -41,7 +42,8 @@ You can also get the source by "git clone" our git repository. Make sure you hav
 ```shell
 git clone https://github.com/protocolbuffers/protobuf.git
 cd protobuf
-git checkout v3.7.1
+# Only version v3.14.0 and v3.20.3 of protobuf are supported.
+git checkout v3.14.0 
 git submodule update --init --recursive
 ./autogen.sh
 ```
